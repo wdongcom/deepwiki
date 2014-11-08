@@ -1,0 +1,33 @@
+
+#all {
+	padding: 15px; 
+}
+
+#wiki-nav {
+	border: 1px solid #ddd;
+	background: #eee;
+	padding: 10px 15px;
+	float: left;
+	width: 300px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+#wiki-nav a {
+	text-decoration: none;
+}
+#wiki-nav ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+#wiki-nav li {
+    margin: 5px 0;
+}
+#wiki-nav ul ul {
+	padding-left: 15px;
+}
+
+#wiki-content {
+	margin-left: 300px;
+}

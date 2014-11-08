@@ -1,0 +1,12 @@
+{
+	"name": "HiWiki Default Theme",
+	"assets": {
+		"css": [
+			"normalize.css",
+			"gfm.css",
+			"style.css"
+		],
+		"js": [
+		]
+	}
+}

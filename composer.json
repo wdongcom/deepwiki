@@ -1,0 +1,20 @@
+{
+	"name": "hiwiki/hiwiki",
+	"description": "A pure markdown docs.",
+	"license": "Apache License, Version 2.0",
+	"authors": [
+		{
+			"name": "Yuan Chong",
+			"email": "ychongsaytc@gmail.com",
+			"homepage": "http://ychong.com"
+		}
+	],
+	"minimum-stability": "dev",
+	"config": {
+		"vendor-dir": "hiwiki-vendor"
+	},
+	"require": {
+		"michelf/php-markdown": "@stable",
+		"php": ">=5.3.0"
+	}
+}
