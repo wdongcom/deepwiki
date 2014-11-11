@@ -1,8 +1,9 @@
 {
 	"site_name": "HiWiki",
 	"site_description": "HiWiki Showcase",
-	"copyright": "Powered by HiWiki.",
+	"copyright": "Powered by <a href=\"https://github.com/ychongsaytc/hiwiki\" target=\"_blank\">HiWiki</a>.",
 	"theme": "default",
+	"rewrite": true,
 	"logging": {
 		"cookie_salt": "REPLACE_THIS_WITH_A_RANDOM_STRING",
 		"password": "hiwiki"

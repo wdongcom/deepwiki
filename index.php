@@ -10,14 +10,14 @@
 date_default_timezone_set( 'UTC' );
 error_reporting( 0 );
 
-// load query string
+// load query
 
 $current_path = dirname( $_SERVER['PATH_INFO'] );
-if ( 0 === strpos( $_SERVER['REQUEST_URI'], $current_path ) )
-	$query_string = substr( $_SERVER['REQUEST_URI'], strlen( $current_path ) );
+
+if ( isset( $_GET['p'] ) )
+	$query_string = trim( $_GET['p'], '/' );
 else
-	$query_string = $_SERVER['REQUEST_URI'];
-$query_string = trim( $query_string, '/' );
+	$query_string = '';
 
 // constants
 
@@ -32,6 +32,16 @@ define( 'THEMES_ROOT_URI', SITE_URI . '/hiwiki-themes' );
 define( 'LOGGING_LOGGED_IN', 11 );
 define( 'LOGGING_NOT_LOGGED_IN', 12 );
 define( 'LOGGING_WRONG_PASSWORD', 13 );
+
+// functions
+
+function _uri( $path ) {
+	global $config;
+	if ( $config['rewrite'] )
+		return SITE_URI . '/' . $path;
+	else
+		return SITE_URI . '/index.php?p=' . $path;
+}
 
 // components
 
@@ -48,14 +58,17 @@ $config = json_decode( $config_json, true );
 if ( empty( $config ) )
 	$config = array();
 
+// defaults
+
 $config = array_merge( array(
 	'site_name' => 'HiWiki',
 	'site_description' => '',
 	'copyright' => '&copy; HiWiki.',
 	'theme' => 'default',
+	'rewrite' => false,
 	'logging' => array(
 		'cookie_salt' => null,
-		'credentials' => array(),
+		'password' => null,
 	),
 ), $config );
 
@@ -101,11 +114,13 @@ $parts['{{login_form}}'] = '<form method="post" role="form">' .
 if ( ! empty( $config['logging']['password'] ) ) {
 	$logged = LOGGING_NOT_LOGGED_IN;
 	if ( isset( $_COOKIE['logging'] ) ) {
+		// has logging cookie
 		$cookie_hash = $_COOKIE['logging'];
 		if ( $cookie_hash === md5( md5( $config['logging']['password'] ) . ':' . $config['logging']['cookie_salt'] ) ) {
 			$logged = LOGGING_LOGGED_IN;
 		}
 	} elseif ( isset( $_POST['password'] ) && ! empty( $_POST['password'] ) ) {
+		// post password
 		if ( $config['logging']['password'] === $_POST['password'] ) {
 			setcookie( 'logging', md5( md5( $config['logging']['password'] ) . ':' . $config['logging']['cookie_salt'] ), time() + 86400, SITE_URI );
 			$logged = LOGGING_LOGGED_IN;
@@ -113,7 +128,9 @@ if ( ! empty( $config['logging']['password'] ) ) {
 			$logged = LOGGING_WRONG_PASSWORD;
 		}
 	}
+	// show logging form
 	if ( LOGGING_LOGGED_IN !== $logged ) {
+		// wrong password
 		if ( LOGGING_WRONG_PASSWORD === $logged ) {
 			$parts['{{login_form}}'] = '<div class="alert alert-danger" role="alert">Wrong password.</div>' . $parts['{{login_form}}'];
 		}
@@ -185,7 +202,7 @@ foreach ( array_keys( $items ) as $k ) {
 if ( empty( $query_string ) ) {
 	foreach ( $items as $entry ) {
 		if ( false === $entry['is_anchor'] ) {
-			header( 'Location: ' . SITE_URI . '/' . $entry['path'] );
+			header( 'Location: ' . _uri( $entry['path'] ) );
 			exit();
 		}
 	}
@@ -193,7 +210,6 @@ if ( empty( $query_string ) ) {
 
 // compile markdown
 
-$doc = array();
 foreach ( $items as $entry ) {
 	if ( $entry['path'] === $query_string ) {
 		$markdown = file_get_contents( DOCS_ROOT . '/' . $entry['filename'] );
@@ -210,6 +226,17 @@ foreach ( $items as $entry ) {
 	}
 }
 
+// 404
+
+if ( ! isset( $doc ) ) {
+	// load theme template
+	$template = file_get_contents( $theme_root . '/404.html' );
+	$output = str_replace( array_keys( $parts ), $parts, $template );
+	// output html
+	echo $output;
+	exit();
+}
+
 // construct the rest of template parts
 
 $parts['{{doc_title}}'] = $doc['title'];
@@ -220,7 +247,7 @@ $parts['{{nav}}'] .= '<div class="list-group">';
 foreach ( $items as $k => $entry )
 	$parts['{{nav}}'] .= sprintf( '<a class="%s" href="%s">%s %s</a>',
 		'list-group-item' . ( $query_string === $entry['path'] ? ' active' : null ),
-		$entry['is_anchor'] ? 'javascript:void(0);' : SITE_URI . '/' . $entry['path'],
+		$entry['is_anchor'] ? 'javascript:void(0);' : _uri( $entry['path'] ),
 		$entry['chapter'],
 		$entry['title'] );
 $parts['{{nav}}'] .= '</div>';
@@ -233,4 +260,5 @@ $output = str_replace( array_keys( $parts ), $parts, $template );
 // output html
 
 echo $output;
+exit();
 

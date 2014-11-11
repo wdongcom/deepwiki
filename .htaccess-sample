@@ -1,0 +1,20 @@
+
+# prevent directory listing
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+
+# change / to your HiWiki relative directory path, eg. /path/to/wiki/
+RewriteBase /
+
+# prevent illegal request
+RewriteRule ^hiwiki-config/(.*)$ index.php\?p=_403 [L]
+RewriteRule ^hiwiki-docs/(.*)$ index.php\?p=_403 [L]
+
+# rewrite non-exist path to index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php\?p=$1 [QSA,L]
+
+</IfModule>
