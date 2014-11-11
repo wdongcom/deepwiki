@@ -15,6 +15,7 @@
 	},
 	"require": {
 		"michelf/php-markdown": "@stable",
+		"twbs/bootstrap": "@stable",
 		"php": ">=5.3.0"
 	}
 }

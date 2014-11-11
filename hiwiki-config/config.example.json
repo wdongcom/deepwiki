@@ -2,5 +2,9 @@
 	"site_name": "HiWiki",
 	"site_description": "HiWiki Showcase",
 	"copyright": "Powered by HiWiki.",
-	"theme": "default"
+	"theme": "default",
+	"logging": {
+		"cookie_salt": "REPLACE_THIS_WITH_A_RANDOM_STRING",
+		"password": "hiwiki"
+	}
 }

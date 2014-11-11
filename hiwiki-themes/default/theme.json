@@ -2,7 +2,8 @@
 	"name": "HiWiki Default Theme",
 	"assets": {
 		"css": [
-			"normalize.css",
+			"../../hiwiki-vendor/twbs/bootstrap/dist/css/bootstrap.min.css",
+			"../../hiwiki-vendor/twbs/bootstrap/dist/css/bootstrap-theme.min.css",
 			"gfm.css",
 			"style.css"
 		],

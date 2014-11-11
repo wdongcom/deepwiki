@@ -29,6 +29,10 @@ define( 'DOCS_ROOT', APP_ROOT . '/hiwiki-docs' );
 define( 'THEMES_ROOT', APP_ROOT . '/hiwiki-themes' );
 define( 'THEMES_ROOT_URI', SITE_URI . '/hiwiki-themes' );
 
+define( 'LOGGING_LOGGED_IN', 11 );
+define( 'LOGGING_NOT_LOGGED_IN', 12 );
+define( 'LOGGING_WRONG_PASSWORD', 13 );
+
 // components
 
 require_once ( VENDOR_ROOT . '/autoload.php' );
@@ -49,7 +53,78 @@ $config = array_merge( array(
 	'site_description' => '',
 	'copyright' => '&copy; HiWiki.',
 	'theme' => 'default',
+	'logging' => array(
+		'cookie_salt' => null,
+		'credentials' => array(),
+	),
 ), $config );
+
+// load theme
+
+$theme = $config['theme'];
+$theme_root = THEMES_ROOT . '/' . $theme;
+$theme_root_uri = THEMES_ROOT_URI . '/' . $theme;
+$theme_config_filepath = $theme_root . '/theme.json';
+if ( ! file_exists( $theme_config_filepath ) ) {
+	exit( 'illegal theme' );
+} else {
+	$theme_config = json_decode( file_get_contents( $theme_config_filepath ), true );
+}
+
+// pre-construct template parts
+
+$parts = array(
+	'{{site_name}}' => $config['site_name'],
+	'{{site_description}}' => $config['site_description'],
+	'{{site_uri}}' => SITE_URI,
+	'{{html_head}}' => '',
+	'{{nav}}' => '',
+	'{{doc_title}}' => '',
+	'{{doc_heading}}' => '',
+	'{{doc_content}}' => '',
+	'{{copyright}}' => $config['copyright'],
+	'{{login_form}}' => '',
+);
+
+foreach ( $theme_config['assets']['css'] as $entry )
+	$parts['{{html_head}}'] .= sprintf( '<link rel="stylesheet" type="text/css" href="%s" />', $theme_root_uri . '/' . $entry );
+foreach ( $theme_config['assets']['js'] as $entry )
+	$parts['{{html_head}}'] .= sprintf( '<script type="text/javascript" src="%s"></script>', $theme_root_uri . '/' . $entry );
+
+$parts['{{login_form}}'] = '<form method="post" role="form">' .
+	'<div class="form-group"><label>Password</label><input type="password" name="password" class="form-control" /></div>' .
+	'<button type="submit" class="btn btn-default">Submit</button>' .
+	'</form>';
+
+// logging
+
+if ( ! empty( $config['logging']['password'] ) ) {
+	$logged = LOGGING_NOT_LOGGED_IN;
+	if ( isset( $_COOKIE['logging'] ) ) {
+		$cookie_hash = $_COOKIE['logging'];
+		if ( $cookie_hash === md5( md5( $config['logging']['password'] ) . ':' . $config['logging']['cookie_salt'] ) ) {
+			$logged = LOGGING_LOGGED_IN;
+		}
+	} elseif ( isset( $_POST['password'] ) && ! empty( $_POST['password'] ) ) {
+		if ( $config['logging']['password'] === $_POST['password'] ) {
+			setcookie( 'logging', md5( md5( $config['logging']['password'] ) . ':' . $config['logging']['cookie_salt'] ), time() + 86400, SITE_URI );
+			$logged = LOGGING_LOGGED_IN;
+		} else {
+			$logged = LOGGING_WRONG_PASSWORD;
+		}
+	}
+	if ( LOGGING_LOGGED_IN !== $logged ) {
+		if ( LOGGING_WRONG_PASSWORD === $logged ) {
+			$parts['{{login_form}}'] = '<div class="alert alert-danger" role="alert">Wrong password.</div>' . $parts['{{login_form}}'];
+		}
+		// load theme template
+		$template = file_get_contents( $theme_root . '/login.html' );
+		$output = str_replace( array_keys( $parts ), $parts, $template );
+		// output html
+		echo $output;
+		exit();
+	}
+}
 
 // walk markdown files
 
@@ -135,42 +210,20 @@ foreach ( $items as $entry ) {
 	}
 }
 
-// load theme
+// construct the rest of template parts
 
-$theme = $config['theme'];
-$theme_root = THEMES_ROOT . '/' . $theme;
-$theme_root_uri = THEMES_ROOT_URI . '/' . $theme;
-$theme_config_filepath = $theme_root . '/theme.json';
-if ( ! file_exists( $theme_config_filepath ) ) {
-	exit( 'illegal theme' );
-} else {
-	$theme_config = json_decode( file_get_contents( $theme_config_filepath ), true );
-}
+$parts['{{doc_title}}'] = $doc['title'];
+$parts['{{doc_heading}}'] = $doc['chapter'] . ' ' . $doc['title'];
+$parts['{{doc_content}}'] = $doc['html'];
 
-// construct template parts
-
-$parts = array(
-	'{{site_name}}' => $config['site_name'],
-	'{{site_description}}' => $config['site_description'],
-	'{{html_head}}' => '',
-	'{{nav}}' => '',
-	'{{doc_title}}' => $doc['title'],
-	'{{doc_heading}}' => $doc['chapter'] . ' ' . $doc['title'],
-	'{{doc_content}}' => $doc['html'],
-);
-
-foreach ( $theme_config['assets']['css'] as $entry )
-	$parts['{{html_head}}'] .= sprintf( '<link rel="stylesheet" type="text/css" href="%s" />', $theme_root_uri . '/' . $entry );
-foreach ( $theme_config['assets']['js'] as $entry )
-	$parts['{{html_head}}'] .= sprintf( '<script type="text/javascript" src="%s"></script>', $theme_root_uri . '/' . $entry );
-
-$parts['{{nav}}'] .= '<ul>';
+$parts['{{nav}}'] .= '<div class="list-group">';
 foreach ( $items as $k => $entry )
-	$parts['{{nav}}'] .= sprintf( '<li><a href="%s">%s %s</a></li>',
+	$parts['{{nav}}'] .= sprintf( '<a class="%s" href="%s">%s %s</a>',
+		'list-group-item' . ( $query_string === $entry['path'] ? ' active' : null ),
 		$entry['is_anchor'] ? 'javascript:void(0);' : SITE_URI . '/' . $entry['path'],
 		$entry['chapter'],
 		$entry['title'] );
-$parts['{{nav}}'] .= '</ul>';
+$parts['{{nav}}'] .= '</div>';
 
 // load theme template
 
