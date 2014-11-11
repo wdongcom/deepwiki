@@ -2,6 +2,10 @@
 # prevent directory listing
 Options -Indexes
 
+# custom error documents
+ErrorDocument 404 index.php\?p=_404
+ErrorDocument 403 index.php\?p=_403
+
 <IfModule mod_rewrite.c>
 RewriteEngine on
 

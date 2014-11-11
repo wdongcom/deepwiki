@@ -3,6 +3,7 @@
 	"site_description": "HiWiki Showcase",
 	"copyright": "Powered by <a href=\"https://github.com/ychongsaytc/hiwiki\" target=\"_blank\">HiWiki</a>.",
 	"theme": "default",
+	"default_path": "quick-start",
 	"rewrite": true,
 	"logging": {
 		"cookie_salt": "REPLACE_THIS_WITH_A_RANDOM_STRING",

@@ -15,13 +15,19 @@ A pure documents showcase, bases on Markdown, coded in PHP.
 2. Write down some Markdown files into `hiwiki-docs/`.
 3. Run it in PHP. 
 
-## URL Rewrite in Apache httpd server
+## URL Rewrite
 
-Place the code in the `.htaccess` file
+### For Apache HTTP Server
+
+Place the code in the `/.htaccess` file
 
 ```
 # prevent directory listing
 Options -Indexes
+
+# custom error page
+ErrorDocument 404 index.php\?p=_404
+ErrorDocument 403 index.php\?p=_403
 
 <IfModule mod_rewrite.c>
 RewriteEngine on
@@ -40,6 +46,10 @@ RewriteRule ^(.*)$ index.php\?p=$1 [QSA,L]
 
 </IfModule>
 ```
+
+### For Nginx
+
+TBD
 
 ## Directory Structure
 

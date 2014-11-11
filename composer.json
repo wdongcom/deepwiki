@@ -16,6 +16,20 @@
 	"require": {
 		"michelf/php-markdown": "@stable",
 		"twbs/bootstrap": "@stable",
+		"jquery/jquery": "*",
 		"php": ">=5.3.0"
-	}
+	},
+	"repositories": [
+		{
+			"type": "package",
+			"package": {
+				"name": "jquery/jquery",
+				"version": "2.1.1",
+				"dist": {
+					"url": "https://code.jquery.com/jquery-2.1.1.min.js",
+					"type": "file"
+				}
+			}
+		}
+	]
 }

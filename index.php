@@ -65,6 +65,7 @@ $config = array_merge( array(
 	'site_description' => '',
 	'copyright' => '&copy; HiWiki.',
 	'theme' => 'default',
+	'default_path' => false,
 	'rewrite' => false,
 	'logging' => array(
 		'cookie_salt' => null,
@@ -155,11 +156,10 @@ foreach ( $filelist as $filename ) {
 		continue;
 	$filename_pure = substr( $filename, 0, strrpos( $filename, '.' . $item_file_extension ) );
 	$matches = array();
-	preg_match_all( '#^(([0-9a-z]+\.)+\ +)?(\#?)(.+?)(\ +\[(\S+)\])?$#', $filename_pure, $matches );
-	$title = $matches[4][0];
-	$slug = $matches[6][0];
+	preg_match_all( '#^(([0-9a-z]+\.)+\ +)?(.+?)(\ +\[(\S+)\])?$#', $filename_pure, $matches );
+	$title = $matches[3][0];
+	$slug = $matches[5][0];
 	$chapter = rtrim( $matches[1][0], ' ' );
-	$is_anchor = ! empty( $matches[3][0] );
 	if ( empty( $slug ) )
 		$slug = $title;
 	$chapter_tree = explode( '.', rtrim( $chapter, '.' ) );
@@ -174,7 +174,6 @@ foreach ( $filelist as $filename ) {
 		'slug' => $slug,
 		'chapter' => $chapter,
 		'filename' => $filename,
-		'is_anchor' => $is_anchor,
 		'depth' => $depth,
 		'parent' => $parent,
 	);
@@ -200,12 +199,8 @@ foreach ( array_keys( $items ) as $k ) {
 // handle request
 
 if ( empty( $query_string ) ) {
-	foreach ( $items as $entry ) {
-		if ( false === $entry['is_anchor'] ) {
-			header( 'Location: ' . _uri( $entry['path'] ) );
-			exit();
-		}
-	}
+	header( 'Location: ' . _uri( $config['default_path'] ) );
+	exit();
 }
 
 // compile markdown
@@ -244,12 +239,49 @@ $parts['{{doc_heading}}'] = $doc['chapter'] . ' ' . $doc['title'];
 $parts['{{doc_content}}'] = $doc['html'];
 
 $parts['{{nav}}'] .= '<div class="list-group">';
-foreach ( $items as $k => $entry )
-	$parts['{{nav}}'] .= sprintf( '<a class="%s" href="%s">%s %s</a>',
-		'list-group-item' . ( $query_string === $entry['path'] ? ' active' : null ),
-		$entry['is_anchor'] ? 'javascript:void(0);' : _uri( $entry['path'] ),
-		$entry['chapter'],
-		$entry['title'] );
+
+$top_level_elements = array();
+$children_elements  = array();
+foreach ( $items as $entry ) {
+	if ( empty( $entry['parent'] ) )
+		$top_level_elements[] = $entry;
+	else
+		$children_elements[ $entry['parent'] ][] = $entry;
+}
+
+function _display_nav_item( $item, &$children_elements, &$output, &$submenu_number ) {
+	global $query_string;
+	$item['has_children'] = isset( $children_elements[ $item['chapter'] ] );
+	$item['is_current'] = 0 === strpos( $query_string, $item['path'] . '/' );
+	$output .= sprintf( '<a class="%s" href="%s"%s%s>%s %s</a>',
+		'list-group-item' . ( $query_string === $item['path'] ? ' active' : null ),
+		( $item['has_children'] ? '#wiki-nav-' . $submenu_number : _uri( $item['path'] ) ),
+		( $item['has_children'] ? ' data-toggle="collapse"' : null ),
+		( $item['is_current'] ? ' aria-expanded="true"' : null ),
+		$item['chapter'],
+		$item['title'] . ( $item['has_children'] ? ' <b class="caret"></b>' : null ) );
+	if ( $item['has_children'] )
+		foreach( $children_elements[ $item['chapter'] ] as $entry ) {
+			if ( ! isset( $new_level ) ) {
+				$new_level = true;
+				$output .= '<div class="submenu panel-collapse collapse' . ( $item['is_current'] ? ' in' : null ) . '" id="wiki-nav-' . $submenu_number . '">';
+				$submenu_number ++;
+			}
+			_display_nav_item( $entry, $children_elements, $output, $submenu_number );
+		}
+	if ( isset( $new_level ) ) {
+		$output .= '</div>';
+	}
+	$output .= '';
+}
+
+$output_nav = '';
+$submenu_number = 1;
+foreach ( $top_level_elements as $entry )
+	_display_nav_item( $entry, $children_elements, $output_nav, $submenu_number );
+
+$parts['{{nav}}'] .= $output_nav;
+
 $parts['{{nav}}'] .= '</div>';
 
 // load theme template
