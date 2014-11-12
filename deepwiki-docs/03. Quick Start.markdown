@@ -1,0 +1,4 @@
+
+1. Make `deepwiki-config/config.json` from the sample.
+2. Write down some Markdown files into `deepwiki-docs/`.
+3. Run it in PHP. 
