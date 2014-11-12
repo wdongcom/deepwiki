@@ -1,5 +1,5 @@
 {
-	"name": "hiwiki/hiwiki",
+	"name": "ychongsaytc/deepwiki",
 	"description": "A pure markdown docs.",
 	"license": "Apache License, Version 2.0",
 	"authors": [
@@ -11,7 +11,7 @@
 	],
 	"minimum-stability": "dev",
 	"config": {
-		"vendor-dir": "hiwiki-vendor"
+		"vendor-dir": "deepwiki-vendor"
 	},
 	"require": {
 		"michelf/php-markdown": "@stable",

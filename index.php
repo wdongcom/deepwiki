@@ -1,6 +1,6 @@
 <?php
 /**
- * HiWiki
+ * DeepWiki
  *
  * @author Yuan Chong <ychongsaytc@gmail.com>
  */
@@ -23,11 +23,11 @@ else
 
 define( 'SITE_URI', $current_path );
 define( 'APP_ROOT', __DIR__ );
-define( 'CONFIG_ROOT', APP_ROOT . '/hiwiki-config' );
-define( 'VENDOR_ROOT', APP_ROOT . '/hiwiki-vendor' );
-define( 'DOCS_ROOT', APP_ROOT . '/hiwiki-docs' );
-define( 'THEMES_ROOT', APP_ROOT . '/hiwiki-themes' );
-define( 'THEMES_ROOT_URI', SITE_URI . '/hiwiki-themes' );
+define( 'CONFIG_ROOT', APP_ROOT . '/deepwiki-config' );
+define( 'VENDOR_ROOT', APP_ROOT . '/deepwiki-vendor' );
+define( 'DOCS_ROOT', APP_ROOT . '/deepwiki-docs' );
+define( 'THEMES_ROOT', APP_ROOT . '/deepwiki-themes' );
+define( 'THEMES_ROOT_URI', SITE_URI . '/deepwiki-themes' );
 
 define( 'LOGGING_LOGGED_IN', 11 );
 define( 'LOGGING_NOT_LOGGED_IN', 12 );
@@ -61,9 +61,9 @@ if ( empty( $config ) )
 // defaults
 
 $config = array_merge( array(
-	'site_name' => 'HiWiki',
+	'site_name' => 'DeepWiki',
 	'site_description' => '',
-	'copyright' => '&copy; HiWiki.',
+	'copyright' => 'Powered by <a href=\"https://github.com/ychongsaytc/deepwiki\" target=\"_blank\">DeepWiki</a>.',
 	'theme' => 'default',
 	'home_path' => false,
 	'display_chapter' => false,

@@ -1,7 +1,7 @@
 {
-	"site_name": "HiWiki",
-	"site_description": "HiWiki Showcase",
-	"copyright": "Powered by <a href=\"https://github.com/ychongsaytc/hiwiki\" target=\"_blank\">HiWiki</a>.",
+	"site_name": "DeepWiki",
+	"site_description": "DeepWiki Showcase",
+	"copyright": "Powered by <a href=\"https://github.com/ychongsaytc/deepwiki\" target=\"_blank\">DeepWiki</a>.",
 	"theme": "default",
 	"home_path": "quick-start",
 	"display_chapter": false,
