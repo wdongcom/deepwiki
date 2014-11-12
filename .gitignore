@@ -1,3 +1,4 @@
 /composer.lock
 /deepwiki-vendor
 /.htaccess
+/node_modules
