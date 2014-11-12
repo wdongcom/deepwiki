@@ -43,6 +43,12 @@ function _uri( $path ) {
 		return SITE_URI . '/index.php?p=' . $path;
 }
 
+function _sanitize( $string ) {
+	$output = strtolower( $string );
+	$output = preg_replace( '#([^0-9a-z]+)#', '-', $output );
+	return $output;
+}
+
 // components
 
 require_once ( VENDOR_ROOT . '/autoload.php' );
@@ -51,7 +57,7 @@ require_once ( VENDOR_ROOT . '/autoload.php' );
 
 $config_filename = CONFIG_ROOT . '/config.json';
 if ( ! file_exists( $config_filename ) )
-	$config_filename = CONFIG_ROOT . '/config.example.json';
+	$config_filename = CONFIG_ROOT . '/config-sample.json';
 $config_json = file_get_contents( $config_filename );
 $config = json_decode( $config_json, true );
 
@@ -153,16 +159,16 @@ foreach ( $filelist as $filename ) {
 	if ( in_array( $filename, array( '.', '..', '.gitignore' ) ) )
 		continue;
 	$item_file_extension = pathinfo( $filename, PATHINFO_EXTENSION );
-	if ( ! in_array( $item_file_extension, array( 'md', 'mdown', 'markdown', 'txt', 'html' ) ) )
+	if ( ! in_array( $item_file_extension, array( 'markdown', 'md', 'mdown', 'txt', 'html' ) ) )
 		continue;
 	$filename_pure = substr( $filename, 0, strrpos( $filename, '.' . $item_file_extension ) );
 	$matches = array();
 	preg_match_all( '#^(([0-9a-z]+\.)+\ +)?(.+?)(\ +\[(\S+)\])?$#', $filename_pure, $matches );
 	$title = $matches[3][0];
-	$slug = $matches[5][0];
+	$slug = _sanitize( $matches[5][0] );
 	$chapter = rtrim( $matches[1][0], ' ' );
 	if ( empty( $slug ) )
-		$slug = $title;
+		$slug = _sanitize( $title );
 	$chapter_tree = explode( '.', rtrim( $chapter, '.' ) );
 	$depth = count( $chapter_tree );
 	array_pop( $chapter_tree );
