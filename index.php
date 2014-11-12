@@ -65,7 +65,8 @@ $config = array_merge( array(
 	'site_description' => '',
 	'copyright' => '&copy; HiWiki.',
 	'theme' => 'default',
-	'default_path' => false,
+	'home_path' => false,
+	'display_chapter' => false,
 	'rewrite' => false,
 	'logging' => array(
 		'cookie_salt' => null,
@@ -199,7 +200,7 @@ foreach ( array_keys( $items ) as $k ) {
 // handle request
 
 if ( empty( $query_string ) ) {
-	header( 'Location: ' . _uri( $config['default_path'] ) );
+	header( 'Location: ' . _uri( $config['home_path'] ) );
 	exit();
 }
 
@@ -235,7 +236,7 @@ if ( ! isset( $doc ) ) {
 // construct the rest of template parts
 
 $parts['{{doc_title}}'] = $doc['title'];
-$parts['{{doc_heading}}'] = $doc['chapter'] . ' ' . $doc['title'];
+$parts['{{doc_heading}}'] = ( $config['display_chapter'] ? $doc['chapter'] . ' ' : null ) . $doc['title'];
 $parts['{{doc_content}}'] = $doc['html'];
 
 $parts['{{nav}}'] .= '<div class="list-group">';
@@ -253,13 +254,13 @@ function _display_nav_item( $item, &$children_elements, &$output, &$submenu_numb
 	global $query_string;
 	$item['has_children'] = isset( $children_elements[ $item['chapter'] ] );
 	$item['is_current'] = 0 === strpos( $query_string, $item['path'] . '/' );
-	$output .= sprintf( '<a class="%s" href="%s"%s%s>%s %s</a>',
+	$output .= sprintf( '<a class="%s" href="%s"%s%s>%s</a>',
 		'list-group-item' . ( $query_string === $item['path'] ? ' active' : null ),
 		( $item['has_children'] ? '#wiki-nav-' . $submenu_number : _uri( $item['path'] ) ),
 		( $item['has_children'] ? ' data-toggle="collapse"' : null ),
 		( $item['is_current'] ? ' aria-expanded="true"' : null ),
-		$item['chapter'],
-		$item['title'] . ( $item['has_children'] ? ' <b class="caret"></b>' : null ) );
+		( $config['display_chapter'] ? $item['chapter'] . ' ' : null ) .
+			$item['title'] . ( $item['has_children'] ? ' <b class="caret"></b>' : null ) );
 	if ( $item['has_children'] )
 		foreach( $children_elements[ $item['chapter'] ] as $entry ) {
 			if ( ! isset( $new_level ) ) {
