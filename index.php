@@ -25,7 +25,6 @@ define( 'SITE_URI', $current_path );
 define( 'APP_ROOT', __DIR__ );
 define( 'CONFIG_ROOT', APP_ROOT . '/deepwiki-config' );
 define( 'VENDOR_ROOT', APP_ROOT . '/deepwiki-vendor' );
-define( 'DOCS_ROOT', APP_ROOT . '/deepwiki-docs' );
 define( 'THEMES_ROOT', APP_ROOT . '/deepwiki-themes' );
 define( 'THEMES_ROOT_URI', SITE_URI . '/deepwiki-themes' );
 
@@ -41,6 +40,16 @@ function _uri( $path ) {
 		return SITE_URI . '/' . $path;
 	else
 		return SITE_URI . '/index.php?p=' . $path;
+}
+
+function _doc_file_type( $extension_name ) {
+	if ( in_array( $extension_name, array( 'markdown', 'md', 'mdml', 'mdown' ) ) )
+		return 'markdown';
+	if ( in_array( $extension_name, array( 'html', 'htm' ) ) )
+		return 'html';
+	if ( in_array( $extension_name, array( 'txt' ) ) )
+		return 'plain';
+	return false;
 }
 
 function _sanitize( $string ) {
@@ -69,9 +78,10 @@ if ( empty( $config ) )
 $config = array_merge( array(
 	'site_name' => 'DeepWiki',
 	'site_description' => '',
-	'copyright' => 'Powered by <a href=\"https://github.com/ychongsaytc/deepwiki\" target=\"_blank\">DeepWiki</a>.',
+	'copyright' => 'Powered by <a href="https://github.com/ychongsaytc/deepwiki" target="_blank">DeepWiki</a>.',
 	'theme' => 'default',
-	'home_path' => false,
+	'docs_path' => 'deepwiki-docs',
+	'home_route' => null,
 	'display_chapter' => false,
 	'rewrite' => false,
 	'logging' => array(
@@ -79,6 +89,10 @@ $config = array_merge( array(
 		'password' => null,
 	),
 ), $config );
+
+// constants based on configuration
+
+define( 'DOCS_ROOT', APP_ROOT . '/' . trim( $config['docs_path'], '/' ) );
 
 // load theme
 
@@ -119,18 +133,18 @@ $parts['{{login_form}}'] = '<form method="post" role="form">' .
 
 // logging
 
-if ( ! empty( $config['logging']['password'] ) ) {
+if ( ! empty( $config['password'] ) ) {
 	$logged = LOGGING_NOT_LOGGED_IN;
 	if ( isset( $_COOKIE['logging'] ) ) {
 		// has logging cookie
 		$cookie_hash = $_COOKIE['logging'];
-		if ( $cookie_hash === md5( md5( $config['logging']['password'] ) . ':' . $config['logging']['cookie_salt'] ) ) {
+		if ( $cookie_hash === md5( md5( $config['password'] ) . ':' . $config['cookie_salt'] ) ) {
 			$logged = LOGGING_LOGGED_IN;
 		}
 	} elseif ( isset( $_POST['password'] ) && ! empty( $_POST['password'] ) ) {
 		// post password
-		if ( $config['logging']['password'] === $_POST['password'] ) {
-			setcookie( 'logging', md5( md5( $config['logging']['password'] ) . ':' . $config['logging']['cookie_salt'] ), time() + 86400, SITE_URI );
+		if ( $config['password'] === $_POST['password'] ) {
+			setcookie( 'logging', md5( md5( $config['password'] ) . ':' . $config['cookie_salt'] ), time() + 86400, SITE_URI );
 			$logged = LOGGING_LOGGED_IN;
 		} else {
 			$logged = LOGGING_WRONG_PASSWORD;
@@ -151,7 +165,7 @@ if ( ! empty( $config['logging']['password'] ) ) {
 	}
 }
 
-// walk markdown files
+// walk all document files
 
 $filelist = scandir( DOCS_ROOT );
 $items = array();
@@ -159,7 +173,8 @@ foreach ( $filelist as $filename ) {
 	if ( in_array( $filename, array( '.', '..', '.gitignore' ) ) )
 		continue;
 	$item_file_extension = pathinfo( $filename, PATHINFO_EXTENSION );
-	if ( ! in_array( $item_file_extension, array( 'markdown', 'md', 'mdown', 'txt', 'html' ) ) )
+	$type = _doc_file_type( $item_file_extension );
+	if ( false === $type )
 		continue;
 	$filename_pure = substr( $filename, 0, strrpos( $filename, '.' . $item_file_extension ) );
 	$matches = array();
@@ -176,14 +191,7 @@ foreach ( $filelist as $filename ) {
 		$parent = '';
 	else
 		$parent = implode( '.', $chapter_tree ) . '.';
-	$items[] = array(
-		'title' => $title,
-		'slug' => $slug,
-		'chapter' => $chapter,
-		'filename' => $filename,
-		'depth' => $depth,
-		'parent' => $parent,
-	);
+	$items[] = compact( 'title', 'slug', 'chapter', 'filename', 'type', 'depth', 'parent' );
 }
 
 // generate paths
@@ -206,23 +214,32 @@ foreach ( array_keys( $items ) as $k ) {
 // handle request
 
 if ( empty( $query_string ) ) {
-	header( 'Location: ' . _uri( $config['home_path'] ) );
+	header( 'Location: ' . _uri( $config['home_route'] ) );
 	exit();
 }
 
-// compile markdown
+// compile document content
 
 foreach ( $items as $entry ) {
 	if ( $entry['path'] === $query_string ) {
-		$markdown = file_get_contents( DOCS_ROOT . '/' . $entry['filename'] );
-		$html = \Michelf\MarkdownExtra::defaultTransform( $markdown );
+		$origin = file_get_contents( DOCS_ROOT . '/' . $entry['filename'] );
+		switch ( $entry['type'] ) {
+			case 'markdown':
+				$content = \Michelf\MarkdownExtra::defaultTransform( $origin );
+				break;
+			case 'html':
+				$content = $origin;
+				break;
+			default:
+				$content = nl2br( htmlspecialchars( $origin ) );
+				break;
+		}
 		$doc = array(
 			'title' => $entry['title'],
 			'slug' => $entry['slug'],
 			'chapter' => $entry['chapter'],
 			'filename' => $entry['filename'],
-			'markdown' => $markdown,
-			'html' => $html,
+			'content' => $content,
 		);
 		break;
 	}
@@ -243,7 +260,7 @@ if ( ! isset( $doc ) ) {
 
 $parts['{{doc_title}}'] = $doc['title'];
 $parts['{{doc_heading}}'] = ( $config['display_chapter'] ? $doc['chapter'] . ' ' : null ) . $doc['title'];
-$parts['{{doc_content}}'] = $doc['html'];
+$parts['{{doc_content}}'] = $doc['content'];
 
 $parts['{{nav}}'] .= '<div class="list-group">';
 
@@ -257,7 +274,7 @@ foreach ( $items as $entry ) {
 }
 
 function _display_nav_item( $item, &$children_elements, &$output, &$submenu_number ) {
-	global $query_string;
+	global $query_string, $config;
 	$item['has_children'] = isset( $children_elements[ $item['chapter'] ] );
 	$item['is_current'] = 0 === strpos( $query_string, $item['path'] . '/' );
 	$output .= sprintf( '<a class="%s" href="%s"%s%s>%s</a>',

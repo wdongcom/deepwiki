@@ -3,7 +3,8 @@
 	"site_description": "DeepWiki Showcase",
 	"copyright": "Powered by <a href=\"https://github.com/ychongsaytc/deepwiki\" target=\"_blank\">DeepWiki</a>.",
 	"theme": "default",
-	"home_path": "quick-start",
+	"docs_path": "deepwiki-docs",
+	"home_route": "quick-start",
 	"display_chapter": false,
 	"rewrite": false,
 	"logging": {
