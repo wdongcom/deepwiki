@@ -30,6 +30,7 @@ Main configuration is placed in `deepwiki-config/config.json`, can be made from 
 	"home_route": "quick-start",
 	"display_chapter": false,
 	"rewrite": false,
+	"footer_code": "<a href=\"https://github.com/ychongsaytc/deepwiki\" target=\"_blank\" rel\"nofollow\"><img style=\"position: absolute; top: 0; right: 0; border: 0; z-index: 1000;\" src=\"https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67\" alt=\"Fork me on GitHub\" data-canonical-src=\"https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png\"></a>",
 	"cookie_salt": "REPLACE_THIS_WITH_A_RANDOM_STRING",
 	"password": ""
 }
@@ -45,6 +46,7 @@ Property | Description
 `home_route` | The default route (slug name of landing document) for homepage visits. Default: `quick-start`.
 `display_chapter` | Display chapter number (like `1.1.a.`) before document title. Default: false.
 `rewrite` | Enable global URL Rewrite (see URL Rewrite to enable rewrite feature for your server). Default: false.
+`footer_code` | HTML code at the end of `<body>`, can be placed your Google Analytics code, ["Fork me on GitHub"](https://github.com/blog/273-github-ribbons) badge, and anything you want. Default is empty.
 `password` | Main password to view the website, fill in this to enable site authentication. Default is empty.
 `cookie_salt` | A random string for encrypt cookies data, important. Default is empty.
 

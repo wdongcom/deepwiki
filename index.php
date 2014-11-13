@@ -84,10 +84,9 @@ $config = array_merge( array(
 	'home_route' => null,
 	'display_chapter' => false,
 	'rewrite' => false,
-	'logging' => array(
-		'cookie_salt' => null,
-		'password' => null,
-	),
+	'footer_code' => null,
+	'password' => null,
+	'cookie_salt' => null,
 ), $config );
 
 // constants based on configuration
@@ -118,6 +117,7 @@ $parts = array(
 	'{{doc_heading}}' => '',
 	'{{doc_content}}' => '',
 	'{{copyright}}' => $config['copyright'],
+	'{{body_footer}}' => $config['footer_code'],
 	'{{login_form}}' => '',
 );
 
@@ -225,7 +225,10 @@ foreach ( $items as $entry ) {
 		$origin = file_get_contents( DOCS_ROOT . '/' . $entry['filename'] );
 		switch ( $entry['type'] ) {
 			case 'markdown':
-				$content = \Michelf\MarkdownExtra::defaultTransform( $origin );
+				require_once( APP_ROOT . '/deepwiki-vendor/erusev/parsedown-extra/ParsedownExtra.php' );
+				$Parsedown = new ParsedownExtra();
+				$content = $Parsedown->text( $origin );
+				// $content = \Michelf\MarkdownExtra::defaultTransform( $origin );
 				break;
 			case 'html':
 				$content = $origin;

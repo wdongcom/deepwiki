@@ -2,13 +2,13 @@
 	"name": "DeepWiki Default Theme",
 	"assets": {
 		"css": [
-			"../../deepwiki-vendor/twbs/bootstrap/dist/css/bootstrap.min.css",
-			"../../deepwiki-vendor/twbs/bootstrap/dist/css/bootstrap-theme.min.css",
+			"../../deepwiki-vendor/bootstrap/bootstrap/css/bootstrap.min.css",
+			"../../deepwiki-vendor/bootstrap/bootstrap/css/bootstrap-theme.min.css",
 			"build.min.css"
 		],
 		"js": [
-			"../../deepwiki-vendor/jquery/jquery/jquery-2.1.1.min.js",
-			"../../deepwiki-vendor/twbs/bootstrap/dist/js/bootstrap.min.js"
+			"../../deepwiki-vendor/jquery/jquery/jquery.min.js",
+			"../../deepwiki-vendor/bootstrap/bootstrap/js/bootstrap.min.js"
 		]
 	}
 }
