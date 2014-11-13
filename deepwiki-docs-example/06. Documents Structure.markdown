@@ -15,10 +15,10 @@ All documents must be placed in `deepwiki-docs/`.
 3. Parent Page Three [parent-3].markdown
 ```
 
-1. **Chapter Number** (optional). Using digits or letters ended with a point (`.`), if not set, the document will act in flat hierarchy.
+1. **Chapter Number** (optional). Using digits or letters ended with a point (`.`). If not set, the document will act in flat hierarchy.
 1. **Document Title** (required).
-1. **Document Slug Name** (optional). A string to be the ID (or short name) of document, enclosed by a pair of square brackets (`[` and `]`), leave this blank to use sanitized document title as slug name.
-1. **Doucment File Extension Name** (required). Possible values are: `.markdonw`, `.md`, `.mdown`, `.txt`, `.html`.
+1. **Document Slug Name** (optional). A string to be the ID (or short name) of the document, enclosed by a pair of square brackets (`[` and `]`). Leave this blank to use sanitized document title as slug name.
+1. **Doucment File Extension Name** (required). Possible values are: `.markdonw`, `.md`, `.mdown`, `.txt`, `.html`, etc.
 
 ### More examples
 

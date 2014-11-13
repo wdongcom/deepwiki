@@ -2,95 +2,51 @@
 
 A pure documents showcase, bases on Markdown, coded in PHP.
 
+See [Live Demo](http://deepwiki.deepdevelop.com/).
+
 ## Installation
 
-1. Download the latest release of DeepWiki.
+1. [Download the latest release of DeepWiki](https://github.com/ychongsaytc/deepwiki/releases).
 2. Unarchive package, go to shell and run `composer update`.
 3. Done.
 
 ## Quick Start
 
-1. Make `deepwiki-config/config.json` from the sample.
+1. Make `deepwiki-config/config.json` from the example configuration.
 2. Write down some Markdown files into `deepwiki-docs/`.
 3. Run it in PHP. 
 
 ## Configuration
 
-Main configuration file is `deepwiki-config/config.json`, can be made from the example file `deepwiki-config/config-sample.json`.
+Main configuration is placed in `deepwiki-config/config.json`, can be made from the sample file `deepwiki-config/config-sample.json`:
 
 ```json
 {
-
-	// title of website
 	"site_name": "DeepWiki",
-
-	// short description of website
 	"site_description": "DeepWiki Showcase",
-
-	// copyright text in footer, HTML format
 	"copyright": "Powered by <a href=\"https://github.com/ychongsaytc/deepwiki\" target=\"_blank\">DeepWiki</a>.",
-
-	// current theme, must be matched directory name in deepwiki-themes/
 	"theme": "default",
-
-	// the default route (of landing document slug name) for homepage visits
-	"home_path": "quick-start",
-
-	// display chapter number (like 1.1.a.) before document title
+	"docs_path": "deepwiki-docs",
+	"home_route": "quick-start",
 	"display_chapter": false,
-
-	// enable global URL Rewrite (see URL Rewrite to enable rewrite feature for your server)
 	"rewrite": false,
-
-	// fill in password to enable site authentication
-	"logging": {
-
-		// a random string for encrypt cookies data, important
-		"cookie_salt": "REPLACE_THIS_WITH_A_RANDOM_STRING",
-
-		// main password to view website
-		"password": ""
-
-	}
-
+	"cookie_salt": "REPLACE_THIS_WITH_A_RANDOM_STRING",
+	"password": ""
 }
 ```
 
-## URL Rewrite
-
-### For Apache HTTP Server
-
-Place the code in the `/.htaccess` file
-
-```
-# prevent directory listing
-Options -Indexes
-
-# custom error documents
-ErrorDocument 404 index.php\?p=_404
-ErrorDocument 403 index.php\?p=_403
-
-<IfModule mod_rewrite.c>
-RewriteEngine on
-
-# change / to your DeepWiki relative directory path, eg. /path/to/wiki/
-RewriteBase /
-
-# prevent illegal request
-RewriteRule ^deepwiki-config/(.*)$ index.php\?p=_403 [L]
-RewriteRule ^deepwiki-docs/(.*)$ index.php\?p=_403 [L]
-
-# rewrite non-exist path to index.php
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php\?p=$1 [QSA,L]
-
-</IfModule>
-```
-
-### For Nginx
-
-TBD
+Property | Description
+--- | ---
+`site_name` | Title of the website. Default: `DeepWiki`.
+`site_description` | Short description of the website Default: `DeepWiki Showcase`.
+`copyright` | Copyright text in footer HTML format. Default: `Powered by <a href="https://github.com/ychongsaytc/deepwiki" target="_blank">DeepWiki</a>.`.
+`theme` | Slug name of current theme, must be matched a directory name in `deepwiki-themes/`. Default: `default`.
+`docs_path` | Directory to find document files. Default: `deepwiki-docs`.
+`home_route` | The default route (slug name of landing document) for homepage visits. Default: `quick-start`.
+`display_chapter` | Display chapter number (like `1.1.a.`) before document title. Default: false.
+`rewrite` | Enable global URL Rewrite (see URL Rewrite to enable rewrite feature for your server). Default: false.
+`password` | Main password to view the website, fill in this to enable site authentication. Default is empty.
+`cookie_salt` | A random string for encrypt cookies data, important. Default is empty.
 
 ## Directory Structure
 
@@ -123,10 +79,10 @@ All documents must be placed in `deepwiki-docs/`.
 3. Parent Page Three [parent-3].markdown
 ```
 
-1. **Chapter Number** (optional). Using digits or letters ended with a point (`.`), if not set, the document will act in flat hierarchy.
+1. **Chapter Number** (optional). Using digits or letters ended with a point (`.`). If not set, the document will act in flat hierarchy.
 1. **Document Title** (required).
-1. **Document Slug Name** (optional). A string to be the ID (or short name) of document, enclosed by a pair of square brackets (`[` and `]`), leave this blank to use sanitized document title as slug name.
-1. **Doucment File Extension Name** (required). Possible values are: `.markdonw`, `.md`, `.mdown`, `.txt`, `.html`.
+1. **Document Slug Name** (optional). A string to be the ID (or short name) of the document, enclosed by a pair of square brackets (`[` and `]`). Leave this blank to use sanitized document title as slug name.
+1. **Doucment File Extension Name** (required). Possible values are: `.markdonw`, `.md`, `.mdown`, `.txt`, `.html`, etc.
 
 ### More examples
 
@@ -153,6 +109,94 @@ D.3. Erectos.md
 D.3.a. Utramque.md
 D.3.b. Flamma.md
 E. Scythiam.md
+```
+
+## Auto Deployment for Documents
+
+If you are using Git to manage your documents, you can setup an auto deployment tool to deploy files onto DeepWiki.
+
+[**DeepDeploy**](https://deepdeploy.com/) is such an Auto Deployment system, deploying Git repository to any server (via FTP/SFTP). It's easy to use:
+
+1. Go to [DeepDeploy](https://deepdeploy.com/), sign in and create a project.
+1. Add your repository contains document file to the project.
+1. Add your DeepWiki server FTP/SFTP information to Server section, with setting Path to Deploy to the DeepWiki document files path (eg. `/deepwiki-docs` or `/home/ubuntu/public_html/deepwiki-docs`).
+1. Save the project and trigger your first auto deployment.
+
+## URL Rewrite
+
+### For Apache HTTP Server
+
+Place the code in the `/.htaccess` file.
+
+```
+# prevent directory listing
+Options -Indexes
+
+# custom error documents
+ErrorDocument 404 index.php\?p=_404
+ErrorDocument 403 index.php\?p=_403
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+
+# change / to your DeepWiki relative directory path, eg. /path/to/wiki/
+RewriteBase /
+
+# prevent illegal request
+RewriteRule ^deepwiki-config/(.*)$ index.php\?p=_403 [L]
+RewriteRule ^deepwiki-docs/(.*)$ index.php\?p=_403 [L]
+
+# rewrite non-exist path to index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php\?p=$1 [QSA,L]
+
+</IfModule>
+```
+
+### For Nginx
+
+Place the code inside the `http { ... }` node.
+
+```
+server {
+
+	# bind to http://example.com on port 80
+	listen 80;
+	server_name example.com;
+
+	# change this to your DeepWiki root path
+	root /var/www/deepwiki;
+
+	# prevent illegal request
+	location ~ /(deepwiki-config|deepwiki-docs) {
+		deny all;
+	}
+
+	# rewrite non-exist path to index.php, or return HTTP 404 Not Found
+	location / {
+		try_files $uri $uri/ /index.php?p=$uri&$args;
+
+		# custom error documents
+		error_page 404 = /index.php\?p=_404;
+		error_page 403 = /index.php\?p=_403;
+	}
+
+	# example of passing request to FastCGI
+	fastcgi_param PHP_VALUE "open_basedir=$document_root:/tmp/";
+	location ~ \.php$ {
+		fastcgi_pass unix:/tmp/fastcgi-php.socket;
+		fastcgi_index index.php;
+		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+		include fastcgi_params;
+	}
+
+	# prevent from requesting Apache HTTP Server configuration files
+	location ~ /\.ht {
+		deny all;
+	}
+
+}
 ```
 
 ## Theme Development

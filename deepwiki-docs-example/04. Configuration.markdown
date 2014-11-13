@@ -1,0 +1,30 @@
+
+Main configuration is placed in `deepwiki-config/config.json`, can be made from the sample file `deepwiki-config/config-sample.json`:
+
+```json
+{
+	"site_name": "DeepWiki",
+	"site_description": "DeepWiki Showcase",
+	"copyright": "Powered by <a href=\"https://github.com/ychongsaytc/deepwiki\" target=\"_blank\">DeepWiki</a>.",
+	"theme": "default",
+	"docs_path": "deepwiki-docs",
+	"home_route": "quick-start",
+	"display_chapter": false,
+	"rewrite": false,
+	"cookie_salt": "REPLACE_THIS_WITH_A_RANDOM_STRING",
+	"password": ""
+}
+```
+
+Property | Description
+--- | ---
+`site_name` | Title of the website. Default: `DeepWiki`.
+`site_description` | Short description of the website Default: `DeepWiki Showcase`.
+`copyright` | Copyright text in footer HTML format. Default: `Powered by <a href="https://github.com/ychongsaytc/deepwiki" target="_blank">DeepWiki</a>.`.
+`theme` | Slug name of current theme, must be matched a directory name in `deepwiki-themes/`. Default: `default`.
+`docs_path` | Directory to find document files. Default: `deepwiki-docs`.
+`home_route` | The default route (slug name of landing document) for homepage visits. Default: `quick-start`.
+`display_chapter` | Display chapter number (like `1.1.a.`) before document title. Default: false.
+`rewrite` | Enable global URL Rewrite (see URL Rewrite to enable rewrite feature for your server). Default: false.
+`password` | Main password to view the website, fill in this to enable site authentication. Default is empty.
+`cookie_salt` | A random string for encrypt cookies data, important. Default is empty.
