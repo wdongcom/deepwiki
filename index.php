@@ -12,7 +12,7 @@ error_reporting( 0 );
 
 // load query
 
-$current_path = dirname( $_SERVER['PATH_INFO'] );
+$current_path = trim( dirname( $_SERVER['PHP_SELF'] ), '/' );
 
 if ( isset( $_GET['p'] ) )
 	$query_string = trim( $_GET['p'], '/' );
@@ -26,7 +26,7 @@ define( 'APP_ROOT', __DIR__ );
 define( 'CONFIG_ROOT', APP_ROOT . '/deepwiki-config' );
 define( 'VENDOR_ROOT', APP_ROOT . '/deepwiki-vendor' );
 define( 'THEMES_ROOT', APP_ROOT . '/deepwiki-themes' );
-define( 'THEMES_ROOT_URI', SITE_URI . '/deepwiki-themes' );
+define( 'THEMES_ROOT_URI', rtrim( SITE_URI, '/' ) . '/deepwiki-themes' );
 
 define( 'LOGGING_LOGGED_IN', 11 );
 define( 'LOGGING_NOT_LOGGED_IN', 12 );
@@ -34,15 +34,17 @@ define( 'LOGGING_WRONG_PASSWORD', 13 );
 
 // functions
 
-function _uri( $path ) {
+function dw_uri( $path = null ) {
 	global $config;
+	if ( empty( $path ) )
+		return rtrim( SITE_URI, '/' ) . '/';
 	if ( $config['rewrite'] )
-		return SITE_URI . '/' . $path;
+		return rtrim( SITE_URI, '/' ) . '/' . $path;
 	else
-		return SITE_URI . '/index.php?p=' . $path;
+		return rtrim( SITE_URI, '/' ) . '/index.php?p=' . $path;
 }
 
-function _doc_file_type( $extension_name ) {
+function dw_doc_file_type( $extension_name ) {
 	if ( in_array( $extension_name, array( 'markdown', 'md', 'mdml', 'mdown' ) ) )
 		return 'markdown';
 	if ( in_array( $extension_name, array( 'html', 'htm' ) ) )
@@ -52,7 +54,7 @@ function _doc_file_type( $extension_name ) {
 	return false;
 }
 
-function _sanitize( $string ) {
+function dw_sanitize( $string ) {
 	$output = strtolower( $string );
 	$output = preg_replace( '#([^0-9a-z]+)#', '-', $output );
 	return $output;
@@ -110,7 +112,7 @@ if ( ! file_exists( $theme_config_filepath ) ) {
 $parts = array(
 	'{{site_name}}' => $config['site_name'],
 	'{{site_description}}' => $config['site_description'],
-	'{{site_uri}}' => SITE_URI,
+	'{{site_uri}}' => dw_uri(),
 	'{{html_head}}' => '',
 	'{{nav}}' => '',
 	'{{doc_title}}' => '',
@@ -144,7 +146,7 @@ if ( ! empty( $config['password'] ) ) {
 	} elseif ( isset( $_POST['password'] ) && ! empty( $_POST['password'] ) ) {
 		// post password
 		if ( $config['password'] === $_POST['password'] ) {
-			setcookie( 'logging', md5( md5( $config['password'] ) . ':' . $config['cookie_salt'] ), time() + 86400, SITE_URI );
+			setcookie( 'logging', md5( md5( $config['password'] ) . ':' . $config['cookie_salt'] ), time() + 86400, dw_uri() );
 			$logged = LOGGING_LOGGED_IN;
 		} else {
 			$logged = LOGGING_WRONG_PASSWORD;
@@ -173,17 +175,17 @@ foreach ( $filelist as $filename ) {
 	if ( in_array( $filename, array( '.', '..', '.gitignore' ) ) )
 		continue;
 	$item_file_extension = pathinfo( $filename, PATHINFO_EXTENSION );
-	$type = _doc_file_type( $item_file_extension );
+	$type = dw_doc_file_type( $item_file_extension );
 	if ( false === $type )
 		continue;
 	$filename_pure = substr( $filename, 0, strrpos( $filename, '.' . $item_file_extension ) );
 	$matches = array();
 	preg_match_all( '#^(([0-9a-z]+\.)+\ +)?(.+?)(\ +\[(\S+)\])?$#', $filename_pure, $matches );
 	$title = $matches[3][0];
-	$slug = _sanitize( $matches[5][0] );
+	$slug = dw_sanitize( $matches[5][0] );
 	$chapter = rtrim( $matches[1][0], ' ' );
 	if ( empty( $slug ) )
-		$slug = _sanitize( $title );
+		$slug = dw_sanitize( $title );
 	$chapter_tree = explode( '.', rtrim( $chapter, '.' ) );
 	$depth = count( $chapter_tree );
 	array_pop( $chapter_tree );
@@ -214,7 +216,7 @@ foreach ( array_keys( $items ) as $k ) {
 // handle request
 
 if ( empty( $query_string ) ) {
-	header( 'Location: ' . _uri( $config['home_route'] ) );
+	header( 'Location: ' . dw_uri( $config['home_route'] ) );
 	exit();
 }
 
@@ -282,7 +284,7 @@ function _display_nav_item( $item, &$children_elements, &$output, &$submenu_numb
 	$item['is_current'] = 0 === strpos( $query_string, $item['path'] . '/' );
 	$output .= sprintf( '<a class="%s" href="%s"%s%s>%s</a>',
 		'list-group-item' . ( $query_string === $item['path'] ? ' active' : null ),
-		( $item['has_children'] ? '#wiki-nav-' . $submenu_number : _uri( $item['path'] ) ),
+		( $item['has_children'] ? '#wiki-nav-' . $submenu_number : dw_uri( $item['path'] ) ),
 		( $item['has_children'] ? ' data-toggle="collapse"' : null ),
 		( $item['is_current'] ? ' aria-expanded="true"' : null ),
 		( $config['display_chapter'] ? $item['chapter'] . ' ' : null ) .
