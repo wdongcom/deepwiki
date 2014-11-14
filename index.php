@@ -99,7 +99,7 @@ if ( empty( $config ) )
 $config = array_merge( array(
 	'site_name' => 'DeepWiki',
 	'site_description' => '',
-	'copyright' => 'Powered by <a href="https://github.com/ychongsaytc/deepwiki" target="_blank">DeepWiki</a>.',
+	'copyright' => 'Powered by <a href="http://deepwiki.deepdevelop.com/" target="_blank">DeepWiki</a>.',
 	'theme' => 'default',
 	'docs_path' => 'deepwiki-docs',
 	'home_route' => null,

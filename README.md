@@ -6,7 +6,7 @@ See [Live Demo](http://deepwiki.deepdevelop.com/).
 
 ## Installation
 
-1. [Download the latest release of DeepWiki](https://github.com/ychongsaytc/deepwiki/releases).
+1. [Download the latest release of DeepWiki](https://github.com/deepdevelop/deepwiki/releases).
 2. Unarchive package, go to shell and run `composer update`.
 3. Done.
 
@@ -24,13 +24,13 @@ Main configuration is placed in `deepwiki-config/config.json`, can be made from 
 {
 	"site_name": "DeepWiki",
 	"site_description": "DeepWiki Showcase",
-	"copyright": "Powered by <a href=\"https://github.com/ychongsaytc/deepwiki\" target=\"_blank\">DeepWiki</a>.",
+	"copyright": "Powered by <a href=\"http://deepwiki.deepdevelop.com/\" target=\"_blank\">DeepWiki</a>.",
 	"theme": "default",
 	"docs_path": "deepwiki-docs",
 	"home_route": "quick-start",
 	"display_chapter": false,
 	"rewrite": false,
-	"footer_code": "<a href=\"https://github.com/ychongsaytc/deepwiki\" target=\"_blank\" rel\"nofollow\"><img style=\"position: absolute; top: 0; right: 0; border: 0; z-index: 1000;\" src=\"https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67\" alt=\"Fork me on GitHub\" data-canonical-src=\"https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png\"></a>",
+	"footer_code": "<a href=\"https://github.com/deepdevelop/deepwiki\" target=\"_blank\" rel\"nofollow\"><img style=\"position: absolute; top: 0; right: 0; border: 0; z-index: 1000;\" src=\"https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67\" alt=\"Fork me on GitHub\" data-canonical-src=\"https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png\"></a>",
 	"cookie_salt": "REPLACE_THIS_WITH_A_RANDOM_STRING",
 	"password": ""
 }
@@ -40,7 +40,7 @@ Property | Description
 --- | ---
 `site_name` | Title of the website. Default: `DeepWiki`.
 `site_description` | Short description of the website Default: `DeepWiki Showcase`.
-`copyright` | Copyright text in footer HTML format. Default: `Powered by <a href="https://github.com/ychongsaytc/deepwiki" target="_blank">DeepWiki</a>.`.
+`copyright` | Copyright text in footer HTML format. Default: `Powered by <a href="http://deepwiki.deepdevelop.com/" target="_blank">DeepWiki</a>.`.
 `theme` | Slug name of current theme, must be matched a directory name in `deepwiki-themes/`. Default: `default`.
 `docs_path` | Directory to find document files. Default: `deepwiki-docs`.
 `home_route` | The default route (slug name of landing document) for homepage visits. Default: `quick-start`.

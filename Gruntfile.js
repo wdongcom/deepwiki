@@ -27,7 +27,7 @@ module.exports = function( grunt ) {
 
 	readme = [
 		'# DeepWiki',
-		grunt.file.read( 'deepwiki-docs-example/01. About DeepWiki.markdown' ),
+		grunt.file.read( 'deepwiki-docs-example/01. About DeepWiki [about].markdown' ),
 		'## Installation',
 		grunt.file.read( 'deepwiki-docs-example/02. Installation.markdown' ),
 		'## Quick Start',
