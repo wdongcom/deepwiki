@@ -21,7 +21,7 @@ else
 
 // constants
 
-define( 'SITE_URI', $current_path );
+define( 'SITE_URI', '/' . $current_path );
 define( 'APP_ROOT', __DIR__ );
 define( 'CONFIG_ROOT', APP_ROOT . '/deepwiki-config' );
 define( 'VENDOR_ROOT', APP_ROOT . '/deepwiki-vendor' );
@@ -58,6 +58,25 @@ function dw_sanitize( $string ) {
 	$output = strtolower( $string );
 	$output = preg_replace( '#([^0-9a-z]+)#', '-', $output );
 	return $output;
+}
+
+function dw_go_home() {
+	global $config;
+	header( 'Location: ' . dw_uri( $config['home_route'] ) );
+	exit();
+}
+
+function dw_get_logged_in_hash() {
+	global $config;
+	return md5( md5( $config['password'] ) . ':' . $config['cookie_salt'] );
+}
+
+function dw_process_login() {
+	setcookie( 'logging', dw_get_logged_in_hash(), time() + 86400, dw_uri() );
+}
+
+function dw_process_logout() {
+	setcookie( 'logging', null, time() - 86400, dw_uri() );
 }
 
 // components
@@ -110,8 +129,8 @@ if ( ! file_exists( $theme_config_filepath ) ) {
 // pre-construct template parts
 
 $parts = array(
-	'{{site_name}}' => $config['site_name'],
-	'{{site_description}}' => $config['site_description'],
+	'{{site_name}}' => htmlspecialchars( $config['site_name'] ),
+	'{{site_description}}' => htmlspecialchars( $config['site_description'] ),
 	'{{site_uri}}' => dw_uri(),
 	'{{html_head}}' => '',
 	'{{nav}}' => '',
@@ -120,6 +139,7 @@ $parts = array(
 	'{{doc_content}}' => '',
 	'{{copyright}}' => $config['copyright'],
 	'{{body_footer}}' => $config['footer_code'],
+	'{{logout_link}}' => '',
 	'{{login_form}}' => '',
 );
 
@@ -135,18 +155,18 @@ $parts['{{login_form}}'] = '<form method="post" role="form">' .
 
 // logging
 
+$logged = LOGGING_NOT_LOGGED_IN;
 if ( ! empty( $config['password'] ) ) {
-	$logged = LOGGING_NOT_LOGGED_IN;
 	if ( isset( $_COOKIE['logging'] ) ) {
 		// has logging cookie
 		$cookie_hash = $_COOKIE['logging'];
-		if ( $cookie_hash === md5( md5( $config['password'] ) . ':' . $config['cookie_salt'] ) ) {
+		if ( $cookie_hash === dw_get_logged_in_hash() ) {
 			$logged = LOGGING_LOGGED_IN;
 		}
 	} elseif ( isset( $_POST['password'] ) && ! empty( $_POST['password'] ) ) {
 		// post password
 		if ( $config['password'] === $_POST['password'] ) {
-			setcookie( 'logging', md5( md5( $config['password'] ) . ':' . $config['cookie_salt'] ), time() + 86400, dw_uri() );
+			dw_process_login();
 			$logged = LOGGING_LOGGED_IN;
 		} else {
 			$logged = LOGGING_WRONG_PASSWORD;
@@ -165,6 +185,19 @@ if ( ! empty( $config['password'] ) ) {
 		echo $output;
 		exit();
 	}
+}
+
+// handle request
+
+if ( empty( $query_string ) ) {
+	dw_go_home();
+}
+
+// process to logout
+
+if ( '_logout' === $query_string ) {
+	dw_process_logout();
+	dw_go_home();
 }
 
 // walk all document files
@@ -213,13 +246,6 @@ foreach ( array_keys( $items ) as $k ) {
 	$items[ $k ]['path'] = trim( $path, '/' );
 }
 
-// handle request
-
-if ( empty( $query_string ) ) {
-	header( 'Location: ' . dw_uri( $config['home_route'] ) );
-	exit();
-}
-
 // compile document content
 
 foreach ( $items as $entry ) {
@@ -266,6 +292,9 @@ if ( ! isset( $doc ) ) {
 $parts['{{doc_title}}'] = $doc['title'];
 $parts['{{doc_heading}}'] = ( $config['display_chapter'] ? $doc['chapter'] . ' ' : null ) . $doc['title'];
 $parts['{{doc_content}}'] = $doc['content'];
+
+if ( LOGGING_LOGGED_IN == $logged )
+	$parts['{{logout_link}}'] = sprintf( '<a href="%s">Logout</a>', dw_uri( '_logout' ) );
 
 $parts['{{nav}}'] .= '<div class="list-group">';
 
