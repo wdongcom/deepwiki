@@ -1,4 +1,8 @@
 
+### 1.1.0 (beta2) 2014-12-06
+
+- **FIXED**: Redirection bug for root visits
+
 ### 1.1.0 (beta1) 2014-12-06
 
 - **NEW**: Allowed to define all document titles, filenames and slug names in configuration instead of using file naming

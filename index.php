@@ -26,8 +26,8 @@ define( 'APP_ROOT', __DIR__ );
 define( 'CONFIG_ROOT', APP_ROOT . '/deepwiki-config' );
 define( 'VENDOR_ROOT', APP_ROOT . '/deepwiki-vendor' );
 define( 'THEMES_ROOT', APP_ROOT . '/deepwiki-themes' );
-define( 'THEMES_ROOT_URI', SITE_URI . '/deepwiki-themes' );
-define( 'ASSETS_ROOT_URI', SITE_URI . '/deepwiki-assets' );
+define( 'THEMES_ROOT_URI', rtrim( SITE_URI, '/' ) . '/deepwiki-themes' );
+define( 'ASSETS_ROOT_URI', rtrim( SITE_URI, '/' ) . '/deepwiki-assets' );
 
 define( 'LOGGING_LOGGED_IN', 11 );
 define( 'LOGGING_NOT_LOGGED_IN', 12 );
@@ -35,24 +35,40 @@ define( 'LOGGING_WRONG_PASSWORD', 13 );
 
 // functions
 
-function dw_uri( $path = null ) {
-	global $config;
-	if ( empty( $path ) )
-		return SITE_URI . '/';
+function dw_uri( $path = null, $absolute = false ) {
 	if ( strpos( $path, '://' ) > 0 )
 		return $path;
+	if ( empty( $path ) )
+		$uri = rtrim( SITE_URI, '/' ) . '/';
+	global $config;
 	if ( $config['rewrite'] )
-		return SITE_URI . '/' . $path;
+		$uri = rtrim( SITE_URI, '/' ) . '/' . $path;
 	else
-		return SITE_URI . '/index.php?p=' . ltrim( $path, '/' );
+		$uri = rtrim( SITE_URI, '/' ) . '/index.php?p=' . ltrim( $path, '/' );
+	if ( $absolute )
+		$uri = dw_translate_to_absolute_uri( $uri );
+	return $uri;
 }
 
-function dw_asset_uri( $path = null ) {
+function dw_asset_uri( $path = null, $absolute = false ) {
 	global $config;
 	if ( empty( $path ) )
 		return null;
 	else
-		return ASSETS_ROOT_URI . '/' . ltrim( $path, '/' );
+		$uri = ASSETS_ROOT_URI . '/' . ltrim( $path, '/' );
+	if ( $absolute )
+		$uri = dw_translate_to_absolute_uri( $uri );
+	return $uri;
+}
+
+function dw_translate_to_absolute_uri( $uri ) {
+	$protocol = ( isset( $_SERVER['HTTPS'] ) && 'on' == $_SERVER['HTTPS'] ) ? 'https://' : 'http://';
+	$port = (
+			isset( $_SERVER['SERVER_PORT'] ) &&
+				( ( 'http' == $protocol && $_SERVER['SERVER_PORT'] != '80' ) ||
+					( 'https' == $protocol && $_SERVER['SERVER_PORT'] != '443' ) )
+		) ? ':' . $_SERVER['SERVER_PORT'] : null;
+	return $protocol . $_SERVER['SERVER_NAME'] . $port . $uri;
 }
 
 function dw_doc_file_type( $filename ) {
@@ -76,7 +92,7 @@ function dw_sanitize( $string ) {
 
 function dw_go_home() {
 	global $config;
-	header( 'Location: ' . dw_uri( $config['home_route'] ) );
+	header( 'Location: ' . dw_uri( $config['home_route'], true ) );
 	exit();
 }
 
