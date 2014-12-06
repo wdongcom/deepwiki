@@ -5,5 +5,5 @@ If you are using Git to manage your documents, you can setup an auto deployment 
 
 1. Go to [DeepDeploy](https://deepdeploy.com/), sign in and create a project.
 1. Add your repository contains document file to the project.
-1. Add your DeepWiki server FTP/SFTP information to Server section, with setting Path to Deploy to the DeepWiki document files path (eg. `/deepwiki-docs` or `/home/ubuntu/public_html/deepwiki-docs`).
+1. Add your DeepWiki server FTP/SFTP information to Server section, with setting Path to Deploy to the DeepWiki document files path (e.g. `/deepwiki-docs` or `/home/ubuntu/public_html/deepwiki-docs`).
 1. Save the project and trigger your first auto deployment.

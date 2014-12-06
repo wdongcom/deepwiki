@@ -1,4 +1,4 @@
 
 1. [Download the latest release of DeepWiki](https://github.com/deepdevelop/deepwiki/releases).
-2. Unarchive package, go to shell and run `composer update`.
+2. Unarchive package.
 3. Done.

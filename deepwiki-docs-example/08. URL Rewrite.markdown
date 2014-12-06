@@ -31,7 +31,7 @@ RewriteRule ^(.*)$ index.php\?p=$1 [QSA,L]
 
 ### For Nginx
 
-Place the code inside the `http { ... }` node.
+Place the code inside the `http { ... }` node in Nginx configuration file.
 
 ```
 server {

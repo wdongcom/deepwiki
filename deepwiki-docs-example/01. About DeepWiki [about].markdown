@@ -1,4 +1,7 @@
 
 A pure documents showcase, bases on Markdown, coded in PHP.
 
-See [Live Demo](http://deepwiki.deepdevelop.com/).
+- **Contributor**: [Yuan Chong](http://ychong.com/)
+- **License**: [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+- **Live Demo**: [http://deepwiki.deepdevelop.com/](http://deepwiki.deepdevelop.com/)
+
