@@ -3,7 +3,7 @@
 
 - **NEW**: Allowed to define all document titles, filenames and slug names in configuration instead of using file naming
 - **NEW**: Supported inner page linking and asset files linking in document content
-- **NEW**: Implemented [Prism](http://prismjs.com/) to highlight code blocks in DeepWiki Default Theme
+- **NEW**: Implemented Prism to highlight code blocks in DeepWiki Default Theme
 - **NEW**: Minified all assets files in DeepWiki Default Theme
 - **NEW**: Included necessary components in DeepWiki Git repository for easier installation
 
