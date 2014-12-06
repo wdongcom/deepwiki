@@ -26,7 +26,8 @@ define( 'APP_ROOT', __DIR__ );
 define( 'CONFIG_ROOT', APP_ROOT . '/deepwiki-config' );
 define( 'VENDOR_ROOT', APP_ROOT . '/deepwiki-vendor' );
 define( 'THEMES_ROOT', APP_ROOT . '/deepwiki-themes' );
-define( 'THEMES_ROOT_URI', rtrim( SITE_URI, '/' ) . '/deepwiki-themes' );
+define( 'THEMES_ROOT_URI', SITE_URI . '/deepwiki-themes' );
+define( 'ASSETS_ROOT_URI', SITE_URI . '/deepwiki-assets' );
 
 define( 'LOGGING_LOGGED_IN', 11 );
 define( 'LOGGING_NOT_LOGGED_IN', 12 );
@@ -37,14 +38,27 @@ define( 'LOGGING_WRONG_PASSWORD', 13 );
 function dw_uri( $path = null ) {
 	global $config;
 	if ( empty( $path ) )
-		return rtrim( SITE_URI, '/' ) . '/';
+		return SITE_URI . '/';
+	if ( strpos( $path, '://' ) > 0 )
+		return $path;
 	if ( $config['rewrite'] )
-		return rtrim( SITE_URI, '/' ) . '/' . $path;
+		return SITE_URI . '/' . $path;
 	else
-		return rtrim( SITE_URI, '/' ) . '/index.php?p=' . $path;
+		return SITE_URI . '/index.php?p=' . ltrim( $path, '/' );
 }
 
-function dw_doc_file_type( $extension_name ) {
+function dw_asset_uri( $path = null ) {
+	global $config;
+	if ( empty( $path ) )
+		return null;
+	else
+		return ASSETS_ROOT_URI . '/' . ltrim( $path, '/' );
+}
+
+function dw_doc_file_type( $filename ) {
+	if ( strpos( $filename, '://' ) > 0 )
+		return 'url';
+	$extension_name = strtolower( pathinfo( $filename, PATHINFO_EXTENSION ) );
 	if ( in_array( $extension_name, array( 'markdown', 'md', 'mdml', 'mdown' ) ) )
 		return 'markdown';
 	if ( in_array( $extension_name, array( 'html', 'htm' ) ) )
@@ -79,10 +93,6 @@ function dw_process_logout() {
 	setcookie( 'logging', null, time() - 86400, dw_uri() );
 }
 
-// components
-
-require_once ( VENDOR_ROOT . '/autoload.php' );
-
 // load configuration
 
 $config_filename = CONFIG_ROOT . '/config.json';
@@ -108,6 +118,7 @@ $config = array_merge( array(
 	'footer_code' => null,
 	'password' => null,
 	'cookie_salt' => null,
+	'docs' => null,
 ), $config );
 
 // constants based on configuration
@@ -134,19 +145,19 @@ $parts = array(
 	'{{site_uri}}' => dw_uri(),
 	'{{html_head}}' => '',
 	'{{nav}}' => '',
+	'{{copyright}}' => $config['copyright'],
+	'{{body_footer}}' => $config['footer_code'],
+	'{{login_form}}' => '',
+	'{{logout_link}}' => '',
 	'{{doc_title}}' => '',
 	'{{doc_heading}}' => '',
 	'{{doc_content}}' => '',
-	'{{copyright}}' => $config['copyright'],
-	'{{body_footer}}' => $config['footer_code'],
-	'{{logout_link}}' => '',
-	'{{login_form}}' => '',
 );
 
 foreach ( $theme_config['assets']['css'] as $entry )
-	$parts['{{html_head}}'] .= sprintf( '<link rel="stylesheet" type="text/css" href="%s" />', $theme_root_uri . '/' . $entry );
+	$parts['{{html_head}}'] .= sprintf( '<link rel="stylesheet" type="text/css" href="%s" />' . PHP_EOL, $theme_root_uri . '/' . $entry );
 foreach ( $theme_config['assets']['js'] as $entry )
-	$parts['{{html_head}}'] .= sprintf( '<script type="text/javascript" src="%s"></script>', $theme_root_uri . '/' . $entry );
+	$parts['{{html_head}}'] .= sprintf( '<script type="text/javascript" src="%s"></script>' . PHP_EOL, $theme_root_uri . '/' . $entry );
 
 $parts['{{login_form}}'] = '<form method="post" role="form">' .
 	'<div class="form-group"><label>Password</label><input type="password" name="password" class="form-control" /></div>' .
@@ -202,36 +213,65 @@ if ( '_logout' === $query_string ) {
 
 // walk all document files
 
-$filelist = scandir( DOCS_ROOT );
 $items = array();
-foreach ( $filelist as $filename ) {
-	if ( in_array( $filename, array( '.', '..', '.gitignore' ) ) )
-		continue;
-	$item_file_extension = pathinfo( $filename, PATHINFO_EXTENSION );
-	$type = dw_doc_file_type( $item_file_extension );
-	if ( false === $type )
-		continue;
-	$filename_pure = substr( $filename, 0, strrpos( $filename, '.' . $item_file_extension ) );
-	$matches = array();
-	preg_match_all( '#^(([0-9a-z]+\.)+\ +)?(.+?)(\ +\[(\S+)\])?$#', $filename_pure, $matches );
-	$title = $matches[3][0];
-	$slug = dw_sanitize( $matches[5][0] );
-	$chapter = rtrim( $matches[1][0], ' ' );
-	if ( empty( $slug ) )
-		$slug = dw_sanitize( $title );
-	$chapter_tree = explode( '.', rtrim( $chapter, '.' ) );
-	$depth = count( $chapter_tree );
-	array_pop( $chapter_tree );
-	if ( empty( $chapter_tree ) )
-		$parent = '';
-	else
-		$parent = implode( '.', $chapter_tree ) . '.';
-	$items[] = compact( 'title', 'slug', 'chapter', 'filename', 'type', 'depth', 'parent' );
-}
+
+if ( empty( $config['docs'] ) ) :
+
+	foreach ( scandir( DOCS_ROOT ) as $filename ) {
+		if ( in_array( $filename, array( '.', '..', '.gitignore' ) ) )
+			continue;
+		$type = dw_doc_file_type( $filename );
+		if ( false === $type )
+			continue;
+		$filename_pure = substr( $filename, 0, strrpos( $filename, '.' ) );
+		$matches = array();
+		preg_match_all( '#^(([0-9a-z]+\.)+\ +)?(.+?)(\ +\[(\S+)\])?$#', $filename_pure, $matches );
+		$title = $matches[3][0];
+		$slug = dw_sanitize( $matches[5][0] );
+		$chapter = rtrim( $matches[1][0], ' ' );
+		if ( empty( $slug ) )
+			$slug = dw_sanitize( $title );
+		$chapter_tree = explode( '.', rtrim( $chapter, '.' ) );
+		$depth = count( $chapter_tree );
+		array_pop( $chapter_tree );
+		if ( empty( $chapter_tree ) )
+			$parent = '';
+		else
+			$parent = implode( '.', $chapter_tree ) . '.';
+		$items[] = compact( 'title', 'slug', 'chapter', 'filename', 'type', 'depth', 'parent' );
+	}
+
+else :
+
+	function _walk_config_docs_tree( $docs, &$items, $parent = '' ) {
+		$i = 1;
+		foreach ( $docs as $slug => $item ) {
+			$chapter = $parent . $i . '.';
+			$items[] = array(
+				'title'    => $item['title'],
+				'slug'     => $slug,
+				'chapter'  => $chapter,
+				'filename' => $item['file'],
+				'type'     => dw_doc_file_type( $item['file'] ),
+				'depth'    => substr_count( $parent, '.' ) + 1,
+				'parent'   => $parent,
+			);
+			if ( isset( $item['children'] ) )
+				_walk_config_docs_tree( $item['children'], $items, $chapter );
+			$i ++;
+		}
+	}
+	_walk_config_docs_tree( $config['docs'], $items );
+
+endif;
 
 // generate paths
 
 foreach ( array_keys( $items ) as $k ) {
+	if ( 'url' === $items[ $k ]['type'] ) {
+		$items[ $k ]['path'] = $items[ $k ]['filename'];
+		continue;
+	}
 	$path = '/' . $items[ $k ]['slug'];
 	$current_pos = $items[ $k ]['parent'];
 	for ( $i = $items[ $k ]['depth'] - 1; $i >= 1; $i -- ) {
@@ -246,6 +286,11 @@ foreach ( array_keys( $items ) as $k ) {
 	$items[ $k ]['path'] = trim( $path, '/' );
 }
 
+// components
+
+require_once ( VENDOR_ROOT . '/erusev/parsedown/Parsedown.php' );
+require_once ( VENDOR_ROOT . '/erusev/parsedown-extra/ParsedownExtra.php' );
+
 // compile document content
 
 foreach ( $items as $entry ) {
@@ -253,10 +298,8 @@ foreach ( $items as $entry ) {
 		$origin = file_get_contents( DOCS_ROOT . '/' . $entry['filename'] );
 		switch ( $entry['type'] ) {
 			case 'markdown':
-				require_once( APP_ROOT . '/deepwiki-vendor/erusev/parsedown-extra/ParsedownExtra.php' );
 				$Parsedown = new ParsedownExtra();
 				$content = $Parsedown->text( $origin );
-				// $content = \Michelf\MarkdownExtra::defaultTransform( $origin );
 				break;
 			case 'html':
 				$content = $origin;
@@ -264,6 +307,25 @@ foreach ( $items as $entry ) {
 			default:
 				$content = nl2br( htmlspecialchars( $origin ) );
 				break;
+		}
+		/** intergrate dedicated translation */
+		if ( in_array( $entry['type'], array( 'markdown', 'html' ) ) ) {
+			/** replace inner page link */
+			$matches = array();
+			preg_match_all( '#\ (href|src)="\#\/([^\"]+)"#ui', $content, $matches );
+			if ( $matches[0] ) {
+				foreach ( array_keys( $matches[0] ) as $i ) {
+					$content = str_replace( $matches[0][ $i ], ' ' . $matches[1][ $i ] . '="' . dw_uri( $matches[2][ $i ] ) . '"', $content );
+				}
+			}
+			/** replace asset urls */
+			$matches = array();
+			preg_match_all( '#\ (href|src)="\!\/([^\"]+)"#ui', $content, $matches );
+			if ( $matches[0] ) {
+				foreach ( array_keys( $matches[0] ) as $i ) {
+					$content = str_replace( $matches[0][ $i ], ' ' . $matches[1][ $i ] . '="' . dw_asset_uri( $matches[2][ $i ] ) . '"', $content );
+				}
+			}
 		}
 		$doc = array(
 			'title' => $entry['title'],
@@ -311,11 +373,12 @@ function _display_nav_item( $item, &$children_elements, &$output, &$submenu_numb
 	global $query_string, $config;
 	$item['has_children'] = isset( $children_elements[ $item['chapter'] ] );
 	$item['is_current'] = 0 === strpos( $query_string, $item['path'] . '/' );
-	$output .= sprintf( '<a class="%s" href="%s"%s%s>%s</a>',
+	$output .= sprintf( '<a class="%s" href="%s"%s%s%s>%s</a>',
 		'list-group-item' . ( $query_string === $item['path'] ? ' active' : null ),
 		( $item['has_children'] ? '#wiki-nav-' . $submenu_number : dw_uri( $item['path'] ) ),
 		( $item['has_children'] ? ' data-toggle="collapse"' : null ),
 		( $item['is_current'] ? ' aria-expanded="true"' : null ),
+		( 'url' === $item['type'] ? ' target="_blank"' : null ),
 		( $config['display_chapter'] ? $item['chapter'] . ' ' : null ) .
 			$item['title'] . ( $item['has_children'] ? ' <b class="caret"></b>' : null ) );
 	if ( $item['has_children'] )

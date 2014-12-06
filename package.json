@@ -2,8 +2,9 @@
 	"name": "deepwiki",
 	"version": "0.0.0",
 	"devDependencies": {
-		"grunt": "*",
 		"grunt-contrib-cssmin": "*",
-		"grunt-contrib-watch": "*"
+		"grunt-contrib-concat": "*",
+		"grunt-contrib-uglify": "*",
+		"grunt": "*"
 	}
 }
