@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 	<meta charset="UTF-8">
-	<title>{{doc_title}} - {{site_name}}</title>
-	{{html_head}}
+	<title>{{doc_title}} &raquo; {{site_name}}</title>
+
+{{html_head}}
+
 </head>
 <body>
 
 	<header class="navbar navbar-static-top navbar-default" role="banner">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="{{site_uri}}">{{site_name}}</a>
+				<a class="navbar-brand" href="{{site_uri}}" title="{{site_description}}">{{site_name}}</a>
 			</div>
 			<p class="navbar-text">{{site_description}}</p>
 		</div>
@@ -41,7 +44,7 @@
 		</div>
 	</footer>
 
-	{{body_footer}}
+{{body_footer}}
 
 </body>
 </html>

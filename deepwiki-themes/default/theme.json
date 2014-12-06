@@ -1,14 +1,11 @@
 {
-	"name": "DeepWiki Default Theme",
+	"name": "DeepWiki Theme - Default",
 	"assets": {
 		"css": [
-			"../../deepwiki-vendor/bootstrap/bootstrap/css/bootstrap.min.css",
-			"../../deepwiki-vendor/bootstrap/bootstrap/css/bootstrap-theme.min.css",
-			"build.min.css"
+			"build/web.min.css"
 		],
 		"js": [
-			"../../deepwiki-vendor/jquery/jquery/jquery.min.js",
-			"../../deepwiki-vendor/bootstrap/bootstrap/js/bootstrap.min.js"
+			"build/web.min.js"
 		]
 	}
 }
