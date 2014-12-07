@@ -117,7 +117,7 @@ if ( ! file_exists( $config_filename ) )
 $config_json = file_get_contents( $config_filename );
 $config = json_decode( $config_json, true );
 
-if ( empty( $config ) )
+if ( ! is_array( $config ) )
 	$config = array();
 
 // defaults

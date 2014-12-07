@@ -21,4 +21,25 @@ jQuery(document).ready( function() {
 		Prism.highlightAll();
 	}
 
+	/** initial navigation menu toggling */
+	jQuery(window).bind( 'load', function() {
+		if ( jQuery(window).width() < 768 ) {
+			jQuery('#wiki-nav').removeClass('in');
+		} else {
+			jQuery('#wiki-nav').addClass('in');
+		}
+	} );
+
+	/** toggle navigation menu automatically */
+	jQuery(window).bind( 'resize', function() {
+		if ( jQuery(window).width() < 768 && jQuery('#wiki-nav').hasClass('in') &&
+				jQuery('#wiki-nav-toggle').hasClass('collapsed') ) {
+			jQuery('#wiki-nav').removeClass('in');
+		}
+		if ( jQuery(window).width() >= 768 && ! jQuery('#wiki-nav').hasClass('in') ) {
+			jQuery('#wiki-nav').addClass('in');
+			jQuery('#wiki-nav-toggle').addClass('collapsed');
+		}
+	} );
+
 } );

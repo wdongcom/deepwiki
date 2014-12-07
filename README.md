@@ -9,7 +9,7 @@ A pure documents showcase, bases on Markdown, coded in PHP.
 
 ## Installation
 
-1. [Download the latest release of DeepWiki](https://github.com/deepdevelop/deepwiki/releases).
+1. [Download the latest release of DeepWiki](https://github.com/ychongsaytc/deepwiki/releases).
 2. Unarchive package.
 3. Done.
 
@@ -27,13 +27,13 @@ Main configuration is placed in `deepwiki-config/config.json`, can be made from 
 {
 	"site_name": "DeepWiki",
 	"site_description": "Markdown Documents Showcase",
-	"copyright": "Powered by <a href=\"https://github.com/deepdevelop/deepwiki\" target=\"_blank\">DeepWiki</a>.",
+	"copyright": "Powered by <a href=\"https://github.com/ychongsaytc/deepwiki\" target=\"_blank\">DeepWiki</a>.",
 	"theme": "default",
 	"docs_path": "deepwiki-docs-example",
 	"home_route": "quick-start",
 	"display_chapter": false,
 	"rewrite": false,
-	"footer_code": "<a href=\"https://github.com/deepdevelop/deepwiki\" target=\"_blank\" rel\"nofollow\"><img style=\"position: absolute; top: 0; right: 0; border: 0; z-index: 1000;\" src=\"https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67\" alt=\"Fork me on GitHub\" data-canonical-src=\"https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png\"></a>",
+	"footer_code": "",
 	"password": "",
 	"cookie_salt": "REPLACE_THIS_WITH_A_RANDOM_STRING",
 	"docs": {}
@@ -44,7 +44,7 @@ Property | Description
 --- | ---
 `site_name` | Title of the website. Defaults to `'DeepWiki'`.
 `site_description` | Short description of the website Defaults to `'Markdown Documents Showcase'`.
-`copyright` | Copyright text in footer HTML format. Defaults to `'Powered by <a href="https://github.com/deepdevelop/deepwiki" target="_blank">DeepWiki</a>.'`.
+`copyright` | Copyright text in footer HTML format. Defaults to `'Powered by <a href="https://github.com/ychongsaytc/deepwiki" target="_blank">DeepWiki</a>.'`.
 `theme` | Slug name of current theme, must be matched a directory name in `deepwiki-themes/` (see [Theme Development](#/theme-development)). Defaults to `'default'`.
 `docs_path` | Directory to find document files. Defaults to `'deepwiki-docs-example'`.
 `home_route` | The default route (a path to the landing document) for root page visits. Defaults to `'quick-start'`.
@@ -319,6 +319,14 @@ server {
 ```
 
 ## Change Log
+
+### 1.1.1 (beta1) 2014-12-07
+
+- **NEW**: Supported Responsive CSS
+
+### 1.1.0 (beta2) 2014-12-06
+
+- **FIXED**: Redirection bug for root visits
 
 ### 1.1.0 (beta1) 2014-12-06
 
