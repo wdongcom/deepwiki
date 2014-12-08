@@ -1,4 +1,9 @@
 
+### 1.1.1 (beta2) 2014-12-08
+
+- **NEW**: Supported to generate content outline index
+- **NEW**: Automatically add anchor to content headings
+
 ### 1.1.1 (beta1) 2014-12-07
 
 - **NEW**: Supported Responsive CSS

@@ -87,6 +87,9 @@ function dw_doc_file_type( $filename ) {
 function dw_sanitize( $string ) {
 	$output = strtolower( $string );
 	$output = preg_replace( '#([^0-9a-z]+)#', '-', $output );
+	$output = trim( $output, '-' );
+	if ( empty( $output ) )
+		return 'title';
 	return $output;
 }
 
@@ -124,12 +127,13 @@ if ( ! is_array( $config ) )
 
 $config = array_merge( array(
 	'site_name' => 'DeepWiki',
-	'site_description' => '',
+	'site_description' => 'Markdown Documents Showcase',
 	'copyright' => 'Powered by <a href="http://deepwiki.deepdevelop.com/" target="_blank">DeepWiki</a>.',
 	'theme' => 'default',
 	'docs_path' => 'deepwiki-docs',
 	'home_route' => null,
 	'display_chapter' => false,
+	'display_index' => false,
 	'rewrite' => false,
 	'footer_code' => null,
 	'password' => null,
@@ -168,6 +172,7 @@ $parts = array(
 	'{{doc_title}}' => '',
 	'{{doc_heading}}' => '',
 	'{{doc_content}}' => '',
+	'{{doc_index}}' => '',
 );
 
 foreach ( $theme_config['assets']['css'] as $entry )
@@ -243,10 +248,11 @@ if ( empty( $config['docs'] ) ) :
 		$matches = array();
 		preg_match_all( '#^(([0-9a-z]+\.)+\ +)?(.+?)(\ +\[(\S+)\])?$#', $filename_pure, $matches );
 		$title = $matches[3][0];
-		$slug = dw_sanitize( $matches[5][0] );
 		$chapter = rtrim( $matches[1][0], ' ' );
-		if ( empty( $slug ) )
+		if ( empty( $matches[5][0] ) )
 			$slug = dw_sanitize( $title );
+		else
+			$slug = dw_sanitize( $matches[5][0] );
 		$chapter_tree = explode( '.', rtrim( $chapter, '.' ) );
 		$depth = count( $chapter_tree );
 		array_pop( $chapter_tree );
@@ -365,6 +371,37 @@ if ( ! isset( $doc ) ) {
 	exit();
 }
 
+// generate anchors for outline
+
+$matches = array();
+preg_match_all( '#\<h([1-6])\>([^\<]+)\<\/h([1-6])\>#ui', $doc['content'], $matches );
+if ( count( $matches[0] ) ) {
+	$slugs = array();
+	foreach ( array_keys( $matches[2] ) as $k ) {
+		$the_slug = dw_sanitize( $matches[2][ $k ] );
+		if ( in_array( $the_slug, $slugs ) ) {
+			$i = 2;
+			while ( in_array( $the_slug . '-' . $i, $slugs ) ) {
+				$i ++;
+			}
+			$the_slug = $the_slug . '-' . $i;
+		}
+		$slugs[ $k ] = $the_slug;
+	}
+	foreach ( array_keys( $matches[0] ) as $k ) {
+		$doc['content'] = substr_replace(
+			$doc['content'],
+			sprintf( '<h%d id="%s">%s</h%d>',
+				$matches[1][ $k ],
+				$slugs[ $k ],
+				$matches[2][ $k ],
+				$matches[1][ $k ] ),
+			strpos( $doc['content'], $matches[0][ $k ] ),
+			strlen( $matches[0][ $k ] )
+		);
+	}
+}
+
 // construct the rest of template parts
 
 $parts['{{doc_title}}'] = $doc['title'];
@@ -373,6 +410,53 @@ $parts['{{doc_content}}'] = $doc['content'];
 
 if ( LOGGING_LOGGED_IN == $logged )
 	$parts['{{logout_link}}'] = sprintf( '<a href="%s">Logout</a>', dw_uri( '_logout' ) );
+
+// generate outline
+
+if ( $config['display_index'] ) {
+
+	$matches = array();
+	preg_match_all( '#\<h([1-6]) id=\"([^\"]+)\"\>([^\<]+)\<\/h([1-6])\>#ui', $doc['content'], $matches );
+
+	if ( count( $matches[0] ) ) {
+		$headings = array();
+		foreach ( array_keys( $matches[0] ) as $k ) {
+			$headings[] = array(
+				'title' => $matches[3][ $k ],
+				'anchor' => $matches[2][ $k ],
+				'level' => intval( $matches[1][ $k ] ),
+			);
+		}
+		$heading_index = array();
+		$last_level = 0;
+		$unclosed = 0;
+		foreach ( $headings as $entry ) {
+			if ( $entry['level'] > $last_level ) {
+				$heading_index[] = '<ul>';
+				$unclosed ++;
+				$last_level = $entry['level'];
+				$heading_index[] = '<li><a href="#' . $entry['anchor'] . '">' . $entry['title'] . '</a>';
+			} elseif ( $entry['level'] < $last_level ) {
+				if ( $unclosed > 0 ) {
+					$heading_index[] = '</li>' . str_repeat( '</ul>', $last_level - $entry['level'] );
+					$unclosed = $unclosed - ( $last_level - $entry['level'] );
+				}
+				$last_level = $entry['level'];
+				$heading_index[] = '</li>' . '<li><a href="#' . $entry['anchor'] . '">' . $entry['title'] . '</a>';
+			} else {
+				$heading_index[] = '</li>' . '<li><a href="#' . $entry['anchor'] . '">' . $entry['title'] . '</a>';
+			}
+		}
+		if ( $unclosed > 0 ) {
+			$heading_index[] = '</li>' . str_repeat( '</ul>', $unclosed );
+			$unclosed = 0;
+		}
+		$parts['{{doc_index}}'] = '<div class="content-index"><p class="content-index-title">Contents</p>' . implode( null, $heading_index ) . '</div>';
+	}
+
+}
+
+// generate navigation menu
 
 $parts['{{nav}}'] .= '<div class="list-group">';
 

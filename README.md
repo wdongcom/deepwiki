@@ -1,6 +1,6 @@
 # DeepWiki
 
-A pure documents showcase, bases on Markdown, coded in PHP.
+A lightweight wiki system, based on Markdown, coded in PHP.
 
 - **Contributor**: [Yuan Chong](http://ychong.com/)
 - **License**: [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
@@ -32,6 +32,7 @@ Main configuration is placed in `deepwiki-config/config.json`, can be made from 
 	"docs_path": "deepwiki-docs-example",
 	"home_route": "quick-start",
 	"display_chapter": false,
+	"display_index": false,
 	"rewrite": false,
 	"footer_code": "",
 	"password": "",
@@ -49,6 +50,7 @@ Property | Description
 `docs_path` | Directory to find document files. Defaults to `'deepwiki-docs-example'`.
 `home_route` | The default route (a path to the landing document) for root page visits. Defaults to `'quick-start'`.
 `display_chapter` | Display chapter number (like `1.1.a.`) before document title. Defaults to `false`.
+`display_index` | Display contents index navigation (based on content outline). Defaults to `false`.
 `rewrite` | Enable global URL Rewrite (see [URL Rewrite](#/url-rewrite) to enable rewrite feature for your server). Defaults to `false`.
 `footer_code` | HTML code at the end of `<body>`, can be placed your Google Analytics code, ["Fork me on GitHub"](https://github.com/blog/273-github-ribbons) badge, and anything you want. Defaults to empty.
 `password` | Main password to view the website, fill in this to enable site authentication. Defaults to empty.
@@ -319,6 +321,11 @@ server {
 ```
 
 ## Change Log
+
+### 1.1.1 (beta2) 2014-12-08
+
+- **NEW**: Supported to generate content outline index
+- **NEW**: Automatically add anchor to content headings
 
 ### 1.1.1 (beta1) 2014-12-07
 

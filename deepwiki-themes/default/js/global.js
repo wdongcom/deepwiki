@@ -22,13 +22,11 @@ jQuery(document).ready( function() {
 	}
 
 	/** initial navigation menu toggling */
-	jQuery(window).bind( 'load', function() {
-		if ( jQuery(window).width() < 768 ) {
-			jQuery('#wiki-nav').removeClass('in');
-		} else {
-			jQuery('#wiki-nav').addClass('in');
-		}
-	} );
+	if ( jQuery(window).width() < 768 ) {
+		jQuery('#wiki-nav').removeClass('in');
+	} else {
+		jQuery('#wiki-nav').addClass('in');
+	}
 
 	/** toggle navigation menu automatically */
 	jQuery(window).bind( 'resize', function() {

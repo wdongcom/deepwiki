@@ -48,3 +48,25 @@
 .submenu .submenu .submenu .submenu .submenu > a {
 	padding-left: 90px;
 }
+
+#wiki-content-index {
+	float: right;
+	z-index: 1;
+	position: relative;
+	max-width: 20em;
+}
+#wiki-content-index .content-index-title {
+	padding-bottom: .5em;
+	margin-bottom: .5em;
+	border-bottom: 1px solid #ccc;
+}
+#wiki-content-index .content-index {
+	padding: 1em 1em 0;
+	margin-left: 1em;
+	background-color: #f7f7f7;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+}
+#wiki-content-index .content-index ul {
+	padding-left: 1.5em;
+}
