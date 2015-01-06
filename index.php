@@ -38,13 +38,15 @@ define( 'LOGGING_WRONG_PASSWORD', 13 );
 function dw_uri( $path = null, $absolute = false ) {
 	if ( strpos( $path, '://' ) > 0 )
 		return $path;
-	if ( empty( $path ) )
+	if ( empty( $path ) ) {
 		$uri = rtrim( SITE_URI, '/' ) . '/';
-	global $config;
-	if ( $config['rewrite'] )
-		$uri = rtrim( SITE_URI, '/' ) . '/' . $path;
-	else
-		$uri = rtrim( SITE_URI, '/' ) . '/index.php?p=' . ltrim( $path, '/' );
+	} else {
+		global $config;
+		if ( $config['rewrite'] )
+			$uri = rtrim( SITE_URI, '/' ) . '/' . $path . ( false === strpos( $path, '#' ) ? '/' : null );
+		else
+			$uri = rtrim( SITE_URI, '/' ) . '/index.php?p=' . trim( $path, '/' );
+	}
 	if ( $absolute )
 		$uri = dw_translate_to_absolute_uri( $uri );
 	return $uri;
@@ -52,10 +54,11 @@ function dw_uri( $path = null, $absolute = false ) {
 
 function dw_asset_uri( $path = null, $absolute = false ) {
 	global $config;
-	if ( empty( $path ) )
+	if ( empty( $path ) ) {
 		return null;
-	else
+	} else {
 		$uri = ASSETS_ROOT_URI . '/' . ltrim( $path, '/' );
+	}
 	if ( $absolute )
 		$uri = dw_translate_to_absolute_uri( $uri );
 	return $uri;
