@@ -1,2 +1,3 @@
-- deepwiki-vendor
-- deepwiki-themes
+
+- ^deepwiki-vendor/
+- ^deepwiki-themes/
