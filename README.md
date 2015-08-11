@@ -6,7 +6,6 @@ A lightweight wiki system, based on Markdown, coded in PHP.
 - **License**: [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 - **Live Demo**: [http://deepwiki.deepdevelop.com/](http://deepwiki.deepdevelop.com/)
 
-
 ## Installation
 
 1. [Download the latest release of DeepWiki](https://github.com/ychongsaytc/deepwiki/releases).
@@ -25,19 +24,19 @@ Main configuration is placed in `deepwiki-config/config.json`, can be made from 
 
 ```json
 {
-	"site_name": "DeepWiki",
-	"site_description": "Markdown Documents Showcase",
-	"copyright": "Powered by <a href=\"https://github.com/ychongsaytc/deepwiki\" target=\"_blank\">DeepWiki</a>.",
-	"theme": "default",
-	"docs_path": "deepwiki-docs-example",
-	"home_route": "quick-start",
-	"display_chapter": false,
-	"display_index": false,
-	"rewrite": false,
-	"footer_code": "",
-	"password": "",
-	"cookie_salt": "REPLACE_THIS_WITH_A_RANDOM_STRING",
-	"docs": {}
+	"site_name"        : "DeepWiki",
+	"site_description" : "Markdown Documents Showcase",
+	"copyright"        : "Powered by <a href=\"https://github.com/ychongsaytc/deepwiki\" target=\"_blank\">DeepWiki</a>.",
+	"theme"            : "default",
+	"docs_path"        : "deepwiki-docs-example",
+	"home_route"       : "quick-start",
+	"display_chapter"  : false,
+	"display_index"    : false,
+	"rewrite"          : false,
+	"footer_code"      : "",
+	"password"         : "",
+	"cookie_salt"      : "REPLACE_THIS_WITH_A_RANDOM_STRING",
+	"docs"             : {}
 }
 ```
 
@@ -351,7 +350,7 @@ server {
 
 ### Thanks to
 
-- [Parsedown](http://parsedown.org/) (implemented to DeepWiki)
+- [Parsedown](http://parsedown.org/) by [Emanuil Rusev](http://erusev.com/) (implemented to DeepWiki)
 - [Bootstrap](http://getbootstrap.com/) (implemented to DeepWiki Default Theme)
 - [jQuery](http://jquery.com/) (implemented to DeepWiki Default Theme)
 - [Prism](http://prismjs.com/) (implemented to DeepWiki Default Theme)
