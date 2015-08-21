@@ -366,8 +366,21 @@ foreach ( $items as $entry ) {
 // 404
 
 if ( ! isset( $doc ) ) {
+	header( 'HTTP/1.1 404 Not Found' );
 	// load theme template
 	$template = file_get_contents( $theme_root . '/404.html' );
+	$output = str_replace( array_keys( $parts ), $parts, $template );
+	// output html
+	echo $output;
+	exit();
+}
+
+// 403
+
+if ( ! isset( $doc ) && '_403' === $query_string ) {
+	header( 'HTTP/1.1 403 Forbidden' );
+	// load theme template
+	$template = file_get_contents( $theme_root . '/403.html' );
 	$output = str_replace( array_keys( $parts ), $parts, $template );
 	// output html
 	echo $output;
