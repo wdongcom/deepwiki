@@ -129,19 +129,19 @@ if ( ! is_array( $config ) )
 // defaults
 
 $config = array_merge( array(
-	'site_name' => 'DeepWiki',
+	'site_name'        => 'DeepWiki',
 	'site_description' => 'Markdown Documents Showcase',
-	'copyright' => 'Powered by <a href="http://deepwiki.deepdevelop.com/" target="_blank">DeepWiki</a>.',
-	'theme' => 'default',
-	'docs_path' => 'deepwiki-docs',
-	'home_route' => null,
-	'display_chapter' => false,
-	'display_index' => false,
-	'rewrite' => false,
-	'footer_code' => null,
-	'password' => null,
-	'cookie_salt' => null,
-	'docs' => null,
+	'copyright'        => 'Powered by <a href="http://deepwiki.deepdevelop.com/" target="_blank">DeepWiki</a>.',
+	'theme'            => 'default',
+	'docs_path'        => 'deepwiki-docs',
+	'home_route'       => null,
+	'display_chapter'  => false,
+	'display_index'    => false,
+	'rewrite'          => false,
+	'footer_code'      => null,
+	'password'         => null,
+	'cookie_salt'      => null,
+	'docs'             => null,
 ), $config );
 
 // constants based on configuration
@@ -163,19 +163,19 @@ if ( ! file_exists( $theme_config_filepath ) ) {
 // pre-construct template parts
 
 $parts = array(
-	'{{site_name}}' => htmlspecialchars( $config['site_name'] ),
+	'{{site_name}}'        => htmlspecialchars( $config['site_name'] ),
 	'{{site_description}}' => htmlspecialchars( $config['site_description'] ),
-	'{{site_uri}}' => dw_uri(),
-	'{{html_head}}' => '',
-	'{{nav}}' => '',
-	'{{copyright}}' => $config['copyright'],
-	'{{body_footer}}' => $config['footer_code'],
-	'{{login_form}}' => '',
-	'{{logout_link}}' => '',
-	'{{doc_title}}' => '',
-	'{{doc_heading}}' => '',
-	'{{doc_content}}' => '',
-	'{{doc_index}}' => '',
+	'{{site_uri}}'         => dw_uri(),
+	'{{html_head}}'        => '',
+	'{{nav}}'              => '',
+	'{{copyright}}'        => $config['copyright'],
+	'{{body_footer}}'      => $config['footer_code'],
+	'{{login_form}}'       => '',
+	'{{logout_link}}'      => '',
+	'{{doc_title}}'        => '',
+	'{{doc_heading}}'      => '',
+	'{{doc_content}}'      => '',
+	'{{doc_index}}'        => '',
 );
 
 foreach ( $theme_config['assets']['css'] as $entry )
@@ -353,11 +353,11 @@ foreach ( $items as $entry ) {
 			}
 		}
 		$doc = array(
-			'title' => $entry['title'],
-			'slug' => $entry['slug'],
-			'chapter' => $entry['chapter'],
+			'title'    => $entry['title'],
+			'slug'     => $entry['slug'],
+			'chapter'  => $entry['chapter'],
 			'filename' => $entry['filename'],
-			'content' => $content,
+			'content'  => $content,
 		);
 		break;
 	}
