@@ -53,7 +53,9 @@ E. Scythiam.md
 
 ### Define all documents in configuration
 
-Sample configuration (`docs` node in [DeepWiki configuration](#/configuration)):
+The documents can be defined in configuration file (`deepwiki-docs/index.json`), including titles, slug names, filenames and hierarchy.
+
+Sample configuration:
 
 ```json
 {
@@ -68,11 +70,11 @@ Sample configuration (`docs` node in [DeepWiki configuration](#/configuration)):
 			"children": {
 				"category-a": {
 					"title": "Category A",
-					"file": "product-category-a.md"
+					"file": "product/category-a.md"
 				},
 				"category-b": {
 					"title": "Category B",
-					"file": "product-category-b.md"
+					"file": "product/category-b.md"
 				}
 			}
 		},

@@ -118,13 +118,15 @@ function dw_process_logout() {
 // load configuration
 
 $config_filename = CONFIG_ROOT . '/config.json';
-if ( ! file_exists( $config_filename ) )
+if ( ! file_exists( $config_filename ) ) {
 	$config_filename = CONFIG_ROOT . '/config-sample.json';
+}
 $config_json = file_get_contents( $config_filename );
 $config = json_decode( $config_json, true );
 
-if ( ! is_array( $config ) )
+if ( ! is_array( $config ) ) {
 	$config = array();
+}
 
 // defaults
 
@@ -141,12 +143,24 @@ $config = array_merge( array(
 	'footer_code'      => null,
 	'password'         => null,
 	'cookie_salt'      => null,
-	'docs'             => null,
+	'docs'             => array(), // backward compatibility
 ), $config );
 
 // constants based on configuration
 
 define( 'DOCS_ROOT', APP_ROOT . '/' . trim( $config['docs_path'], '/' ) );
+
+// load docs index tree configuration
+
+$config_filename = DOCS_ROOT . '/index.json';
+if ( ! file_exists( $config_filename ) ) {
+	$docs_index = $config['docs']; // backward compatibility
+} elseif ( file_exists( $config_filename ) ) {
+	$config_json = file_get_contents( $config_filename );
+	$docs_index = json_decode( $config_json, true );
+} else {
+	$docs_index = array();
+}
 
 // load theme
 
@@ -239,7 +253,7 @@ if ( '_logout' === $query_string ) {
 
 $items = array();
 
-if ( empty( $config['docs'] ) ) :
+if ( empty( $docs_index ) ) :
 
 	foreach ( scandir( DOCS_ROOT ) as $filename ) {
 		if ( in_array( $filename, array( '.', '..', '.gitignore' ) ) )
@@ -271,6 +285,11 @@ else :
 	function _walk_config_docs_tree( $docs, &$items, $parent = '' ) {
 		$i = 1;
 		foreach ( $docs as $slug => $item ) {
+			$item = array_merge( array(
+				'title'    => null,
+				'file'     => null,
+				'children' => array(),
+			), $item );
 			$chapter = $parent . $i . '.';
 			$items[] = array(
 				'title'    => $item['title'],
@@ -281,12 +300,12 @@ else :
 				'depth'    => substr_count( $parent, '.' ) + 1,
 				'parent'   => $parent,
 			);
-			if ( isset( $item['children'] ) )
+			if ( ! empty( $item['children'] ) )
 				_walk_config_docs_tree( $item['children'], $items, $chapter );
 			$i ++;
 		}
 	}
-	_walk_config_docs_tree( $config['docs'], $items );
+	_walk_config_docs_tree( $docs_index, $items );
 
 endif;
 
