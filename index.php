@@ -255,6 +255,7 @@ $items = array();
 
 if ( empty( $docs_index ) ) :
 
+	// scan docs directory if no configuration defined
 	foreach ( scandir( DOCS_ROOT ) as $filename ) {
 		if ( in_array( $filename, array( '.', '..', '.gitignore' ) ) )
 			continue;
@@ -280,8 +281,30 @@ if ( empty( $docs_index ) ) :
 		$items[] = compact( 'title', 'slug', 'chapter', 'filename', 'type', 'depth', 'parent' );
 	}
 
+	// sort by chapter
+	uasort( $items, function( $a, $b ) {
+		$chapter = array(
+			$a['chapter'],
+			$b['chapter'],
+		);
+		foreach ( array_keys( $chapter ) as $k ) {
+			if ( empty( $chapter[ $k ] ) ) {
+				continue;
+			}
+			$chapter[ $k ] = explode( '.', trim( $chapter[ $k ], '.' ) );
+			$chapter[ $k ] = array_map( function( $v ) {
+				return str_pad( $v, 10, '0', STR_PAD_LEFT );
+			}, $chapter[ $k ] );
+			$chapter[ $k ] = implode( '.', $chapter[ $k ] );
+		}
+		$sorted = $chapter;
+		sort( $sorted );
+		return ( $chapter === $sorted ? 0 : 1 );
+	} );
+
 else :
 
+	// read from docs configuration
 	function _walk_config_docs_tree( $docs, &$items, $parent = '' ) {
 		$i = 1;
 		foreach ( $docs as $slug => $item ) {
