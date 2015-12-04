@@ -59,29 +59,27 @@ Sample configuration:
 
 ```json
 {
-	"docs": {
-		"home": {
-			"title": "Home",
-			"file": "home.md"
-		},
-		"products": {
-			"title": "Products",
-			"file": "",
-			"children": {
-				"category-a": {
-					"title": "Category A",
-					"file": "product/category-a.md"
-				},
-				"category-b": {
-					"title": "Category B",
-					"file": "product/category-b.md"
-				}
+	"home": {
+		"title": "Home",
+		"file": "home.md"
+	},
+	"products": {
+		"title": "Products",
+		"file": "",
+		"children": {
+			"category-a": {
+				"title": "Category A",
+				"file": "product/category-a.md"
+			},
+			"category-b": {
+				"title": "Category B",
+				"file": "product/category-b.md"
 			}
-		},
-		"global-site": {
-			"title": "Global Site",
-			"file": "http://example.com/"
 		}
+	},
+	"global-site": {
+		"title": "Global Site",
+		"file": "http://example.com/"
 	}
 }
 ```
