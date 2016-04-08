@@ -5,19 +5,17 @@
 }
 
 .markdown-body {
-  font-family: sans-serif;
-  -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
-  color: #333333;
-  overflow: hidden;
-  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+  text-size-adjust: 100%;
+  color: #333;
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 16px;
   line-height: 1.6;
   word-wrap: break-word;
 }
 
 .markdown-body a {
-  background: transparent;
+  background-color: transparent;
 }
 
 .markdown-body a:active,
@@ -39,7 +37,6 @@
 }
 
 .markdown-body hr {
-  -moz-box-sizing: content-box;
   box-sizing: content-box;
   height: 0;
 }
@@ -84,23 +81,16 @@
   padding: 0;
 }
 
-.markdown-body * {
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
 .markdown-body input {
-  font: 13px Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
-  line-height: 1.4;
+  font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 .markdown-body a {
-  color: #4183c4;
+  color: #4078c0;
   text-decoration: none;
 }
 
 .markdown-body a:hover,
-.markdown-body a:focus,
 .markdown-body a:active {
   text-decoration: underline;
 }
@@ -114,14 +104,15 @@
   border-bottom: 1px solid #ddd;
 }
 
-.markdown-body hr:before,
-.markdown-body hr:after {
+.markdown-body hr:before {
   display: table;
-  content: " ";
+  content: "";
 }
 
 .markdown-body hr:after {
+  display: table;
   clear: both;
+  content: "";
 }
 
 .markdown-body h1,
@@ -186,8 +177,7 @@
   margin-left: 0;
 }
 
-.markdown-body code,
-.markdown-body pre {
+.markdown-body code {
   font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
   font-size: 12px;
 }
@@ -195,21 +185,39 @@
 .markdown-body pre {
   margin-top: 0;
   margin-bottom: 0;
+  font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
 }
 
-.markdown-body kbd {
-  background-color: #e7e7e7;
-  background-image: -moz-linear-gradient(#fefefe, #e7e7e7);
-  background-image: -webkit-linear-gradient(#fefefe, #e7e7e7);
-  background-image: linear-gradient(#fefefe, #e7e7e7);
-  background-repeat: repeat-x;
-  border-radius: 2px;
-  border: 1px solid #cfcfcf;
-  color: #000;
-  padding: 3px 5px;
-  line-height: 10px;
-  font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+.markdown-body .select::-ms-expand {
+  opacity: 0;
+}
+
+.markdown-body .octicon {
+  font: normal normal normal 16px/1 octicons-anchor;
   display: inline-block;
+  text-decoration: none;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.markdown-body .octicon-link:before {
+  content: '\f05c';
+}
+
+.markdown-body:before {
+  display: table;
+  content: "";
+}
+
+.markdown-body:after {
+  display: table;
+  clear: both;
+  content: "";
 }
 
 .markdown-body>*:first-child {
@@ -220,15 +228,15 @@
   margin-bottom: 0 !important;
 }
 
+.markdown-body a:not([href]) {
+  color: inherit;
+  text-decoration: none;
+}
+
 .markdown-body .anchor {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  display: block;
-  padding-right: 6px;
-  padding-left: 30px;
-  margin-left: -30px;
+  display: inline-block;
+  padding-right: 2px;
+  margin-left: -18px;
 }
 
 .markdown-body .anchor:focus {
@@ -241,7 +249,6 @@
 .markdown-body h4,
 .markdown-body h5,
 .markdown-body h6 {
-  position: relative;
   margin-top: 1em;
   margin-bottom: 16px;
   font-weight: bold;
@@ -254,9 +261,9 @@
 .markdown-body h4 .octicon-link,
 .markdown-body h5 .octicon-link,
 .markdown-body h6 .octicon-link {
-  display: none;
   color: #000;
   vertical-align: middle;
+  visibility: hidden;
 }
 
 .markdown-body h1:hover .anchor,
@@ -265,10 +272,6 @@
 .markdown-body h4:hover .anchor,
 .markdown-body h5:hover .anchor,
 .markdown-body h6:hover .anchor {
-  height: 1em;
-  padding-left: 8px;
-  margin-left: -30px;
-  line-height: 1;
   text-decoration: none;
 }
 
@@ -278,7 +281,7 @@
 .markdown-body h4:hover .anchor .octicon-link,
 .markdown-body h5:hover .anchor .octicon-link,
 .markdown-body h6:hover .anchor .octicon-link {
-  display: inline-block;
+  visibility: visible;
 }
 
 .markdown-body h1 {
@@ -288,6 +291,10 @@
   border-bottom: 1px solid #eee;
 }
 
+.markdown-body h1 .anchor {
+  line-height: 1;
+}
+
 .markdown-body h2 {
   padding-bottom: 0.3em;
   font-size: 1.75em;
@@ -295,22 +302,42 @@
   border-bottom: 1px solid #eee;
 }
 
+.markdown-body h2 .anchor {
+  line-height: 1;
+}
+
 .markdown-body h3 {
   font-size: 1.5em;
   line-height: 1.43;
+}
+
+.markdown-body h3 .anchor {
+  line-height: 1.2;
 }
 
 .markdown-body h4 {
   font-size: 1.25em;
 }
 
+.markdown-body h4 .anchor {
+  line-height: 1.2;
+}
+
 .markdown-body h5 {
   font-size: 1em;
+}
+
+.markdown-body h5 .anchor {
+  line-height: 1.1;
 }
 
 .markdown-body h6 {
   font-size: 1em;
   color: #777;
+}
+
+.markdown-body h6 .anchor {
+  line-height: 1.1;
 }
 
 .markdown-body p,
@@ -409,8 +436,8 @@
 
 .markdown-body img {
   max-width: 100%;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+  box-sizing: content-box;
+  background-color: #fff;
 }
 
 .markdown-body code {
@@ -479,290 +506,136 @@
   content: normal;
 }
 
-.markdown-body .highlight {
-  background: #ffffff;
+.markdown-body kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font-size: 11px;
+  line-height: 10px;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #bbb;
 }
 
-.markdown-body .highlight .c {
-  color: #999988;
-  font-style: italic;
+.markdown-body .pl-c {
+  color: #969896;
 }
 
-.markdown-body .highlight .err {
-  color: #a61717;
-  background-color: #e3d2d2;
-}
-
-.markdown-body .highlight .k {
-  font-weight: bold;
-}
-
-.markdown-body .highlight .o {
-  font-weight: bold;
-}
-
-.markdown-body .highlight .cm {
-  color: #999988;
-  font-style: italic;
-}
-
-.markdown-body .highlight .cp {
-  color: #999999;
-  font-weight: bold;
-}
-
-.markdown-body .highlight .c1 {
-  color: #999988;
-  font-style: italic;
-}
-
-.markdown-body .highlight .cs {
-  color: #999999;
-  font-weight: bold;
-  font-style: italic;
-}
-
-.markdown-body .highlight .gd {
-  color: #000000;
-  background-color: #ffdddd;
-}
-
-.markdown-body .highlight .gd .x {
-  color: #000000;
-  background-color: #ffaaaa;
-}
-
-.markdown-body .highlight .ge {
-  font-style: italic;
-}
-
-.markdown-body .highlight .gr {
-  color: #aa0000;
-}
-
-.markdown-body .highlight .gh {
-  color: #999999;
-}
-
-.markdown-body .highlight .gi {
-  color: #000000;
-  background-color: #ddffdd;
-}
-
-.markdown-body .highlight .gi .x {
-  color: #000000;
-  background-color: #aaffaa;
-}
-
-.markdown-body .highlight .go {
-  color: #888888;
-}
-
-.markdown-body .highlight .gp {
-  color: #555555;
-}
-
-.markdown-body .highlight .gs {
-  font-weight: bold;
-}
-
-.markdown-body .highlight .gu {
-  color: #800080;
-  font-weight: bold;
-}
-
-.markdown-body .highlight .gt {
-  color: #aa0000;
-}
-
-.markdown-body .highlight .kc {
-  font-weight: bold;
-}
-
-.markdown-body .highlight .kd {
-  font-weight: bold;
-}
-
-.markdown-body .highlight .kn {
-  font-weight: bold;
-}
-
-.markdown-body .highlight .kp {
-  font-weight: bold;
-}
-
-.markdown-body .highlight .kr {
-  font-weight: bold;
-}
-
-.markdown-body .highlight .kt {
-  color: #445588;
-  font-weight: bold;
-}
-
-.markdown-body .highlight .m {
-  color: #009999;
-}
-
-.markdown-body .highlight .s {
-  color: #dd1144;
-}
-
-.markdown-body .highlight .n {
-  color: #333333;
-}
-
-.markdown-body .highlight .na {
-  color: teal;
-}
-
-.markdown-body .highlight .nb {
+.markdown-body .pl-c1,
+.markdown-body .pl-s .pl-v {
   color: #0086b3;
 }
 
-.markdown-body .highlight .nc {
-  color: #445588;
+.markdown-body .pl-e,
+.markdown-body .pl-en {
+  color: #795da3;
+}
+
+.markdown-body .pl-s .pl-s1,
+.markdown-body .pl-smi {
+  color: #333;
+}
+
+.markdown-body .pl-ent {
+  color: #63a35c;
+}
+
+.markdown-body .pl-k {
+  color: #a71d5d;
+}
+
+.markdown-body .pl-pds,
+.markdown-body .pl-s,
+.markdown-body .pl-s .pl-pse .pl-s1,
+.markdown-body .pl-sr,
+.markdown-body .pl-sr .pl-cce,
+.markdown-body .pl-sr .pl-sra,
+.markdown-body .pl-sr .pl-sre {
+  color: #183691;
+}
+
+.markdown-body .pl-v {
+  color: #ed6a43;
+}
+
+.markdown-body .pl-id {
+  color: #b52a1d;
+}
+
+.markdown-body .pl-ii {
+  background-color: #b52a1d;
+  color: #f8f8f8;
+}
+
+.markdown-body .pl-sr .pl-cce {
+  color: #63a35c;
   font-weight: bold;
 }
 
-.markdown-body .highlight .no {
-  color: teal;
+.markdown-body .pl-ml {
+  color: #693a17;
 }
 
-.markdown-body .highlight .ni {
-  color: purple;
-}
-
-.markdown-body .highlight .ne {
-  color: #990000;
+.markdown-body .pl-mh,
+.markdown-body .pl-mh .pl-en,
+.markdown-body .pl-ms {
+  color: #1d3e81;
   font-weight: bold;
 }
 
-.markdown-body .highlight .nf {
-  color: #990000;
+.markdown-body .pl-mq {
+  color: #008080;
+}
+
+.markdown-body .pl-mi {
+  color: #333;
+  font-style: italic;
+}
+
+.markdown-body .pl-mb {
+  color: #333;
   font-weight: bold;
 }
 
-.markdown-body .highlight .nn {
-  color: #555555;
+.markdown-body .pl-md {
+  background-color: #ffecec;
+  color: #bd2c00;
 }
 
-.markdown-body .highlight .nt {
-  color: navy;
+.markdown-body .pl-mi1 {
+  background-color: #eaffea;
+  color: #55a532;
 }
 
-.markdown-body .highlight .nv {
-  color: teal;
-}
-
-.markdown-body .highlight .ow {
+.markdown-body .pl-mdr {
+  color: #795da3;
   font-weight: bold;
 }
 
-.markdown-body .highlight .w {
-  color: #bbbbbb;
+.markdown-body .pl-mo {
+  color: #1d3e81;
 }
 
-.markdown-body .highlight .mf {
-  color: #009999;
-}
-
-.markdown-body .highlight .mh {
-  color: #009999;
-}
-
-.markdown-body .highlight .mi {
-  color: #009999;
-}
-
-.markdown-body .highlight .mo {
-  color: #009999;
-}
-
-.markdown-body .highlight .sb {
-  color: #dd1144;
-}
-
-.markdown-body .highlight .sc {
-  color: #dd1144;
-}
-
-.markdown-body .highlight .sd {
-  color: #dd1144;
-}
-
-.markdown-body .highlight .s2 {
-  color: #dd1144;
-}
-
-.markdown-body .highlight .se {
-  color: #dd1144;
-}
-
-.markdown-body .highlight .sh {
-  color: #dd1144;
-}
-
-.markdown-body .highlight .si {
-  color: #dd1144;
-}
-
-.markdown-body .highlight .sx {
-  color: #dd1144;
-}
-
-.markdown-body .highlight .sr {
-  color: #009926;
-}
-
-.markdown-body .highlight .s1 {
-  color: #dd1144;
-}
-
-.markdown-body .highlight .ss {
-  color: #990073;
-}
-
-.markdown-body .highlight .bp {
-  color: #999999;
-}
-
-.markdown-body .highlight .vc {
-  color: teal;
-}
-
-.markdown-body .highlight .vg {
-  color: teal;
-}
-
-.markdown-body .highlight .vi {
-  color: teal;
-}
-
-.markdown-body .highlight .il {
-  color: #009999;
-}
-
-.markdown-body .highlight .gc {
-  color: #999;
-  background-color: #EAF2F5;
-}
-
-.markdown-body .octicon {
-  font: normal normal 16px octicons-anchor;
-  line-height: 1;
+.markdown-body kbd {
   display: inline-block;
-  text-decoration: none;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  padding: 3px 5px;
+  font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  line-height: 10px;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #bbb;
 }
 
-.markdown-body .octicon-link:before {
-  content: '\f05c';
+.markdown-body .plan-price-unit {
+  color: #767676;
+  font-weight: normal;
 }
 
 .markdown-body .task-list-item {
@@ -774,6 +647,57 @@
 }
 
 .markdown-body .task-list-item input {
-  margin: 0 4px 0.25em -20px;
+  margin: 0 0.35em 0.25em -1.6em;
   vertical-align: middle;
+}
+
+.markdown-body .plan-choice {
+  padding: 15px;
+  padding-left: 40px;
+  display: block;
+  border: 1px solid #e0e0e0;
+  position: relative;
+  font-weight: normal;
+  background-color: #fafafa;
+}
+
+.markdown-body .plan-choice.open {
+  background-color: #fff;
+}
+
+.markdown-body .plan-choice.open .plan-choice-seat-breakdown {
+  display: block;
+}
+
+.markdown-body .plan-choice-free {
+  border-radius: 3px 3px 0 0;
+}
+
+.markdown-body .plan-choice-paid {
+  border-radius: 0 0 3px 3px;
+  border-top: 0;
+  margin-bottom: 20px;
+}
+
+.markdown-body .plan-choice-radio {
+  position: absolute;
+  left: 15px;
+  top: 18px;
+}
+
+.markdown-body .plan-choice-exp {
+  color: #999;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.markdown-body .plan-choice-seat-breakdown {
+  margin-top: 10px;
+  display: none;
+}
+
+.markdown-body :checked+.radio-label {
+  z-index: 1;
+  position: relative;
+  border-color: #4078c0;
 }

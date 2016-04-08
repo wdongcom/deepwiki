@@ -1,4 +1,16 @@
 
+### 1.2.0 (beta1) 2016-04-08
+
+- **NEW**: Moved docs index tree configuration to docs root directory
+- **TWEAK**: Add http status for 403 and 404
+- **TWEAK**: Updated vendor components
+- **FIXED**: Sorting for chapter more than 2-figure string
+
+### 1.1.1 (beta3) 2015-08-11
+
+- **TWEAK**: Updated vendor components
+- **TWEAK**: Optimized URL
+
 ### 1.1.1 (beta2) 2014-12-08
 
 - **NEW**: Supported to generate content outline index
