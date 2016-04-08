@@ -35,8 +35,7 @@ Main configuration is placed in `deepwiki-config/config.json`, can be made from 
 	"rewrite"          : false,
 	"footer_code"      : "",
 	"password"         : "",
-	"cookie_salt"      : "REPLACE_THIS_WITH_A_RANDOM_STRING",
-	"docs"             : {}
+	"cookie_salt"      : "REPLACE_THIS_WITH_A_RANDOM_STRING"
 }
 ```
 
@@ -54,12 +53,12 @@ Property | Description
 `footer_code` | HTML code at the end of `<body>`, can be placed your Google Analytics code, ["Fork me on GitHub"](https://github.com/blog/273-github-ribbons) badge, and anything you want. Defaults to empty.
 `password` | Main password to view the website, fill in this to enable site authentication. Defaults to empty.
 `cookie_salt` | A random string for encrypt cookies data, important. Defaults to empty.
-`docs` | Specify all document titles, filenames and slug names in an array. See [Define all documents in configuration](#/writing-documents). Defaults to empty.
 
 ### Directory Structure
 
 ```
 deepwiki-docs/                   Document files in Markdown, plain text, HTML
+             /index.json         A JSON specified all document titles, filenames, slug names and hierarchy
 deepwiki-assets/                 Asset files (e.g. images)
 deepwiki-config/config.json      Main configuration file in JSON
 deepwiki-themes/                 DeepWiki themes
@@ -124,33 +123,33 @@ E. Scythiam.md
 
 ### Define all documents in configuration
 
-Sample configuration (`docs` node in [DeepWiki configuration](#/configuration)):
+The documents can be defined in configuration file (`deepwiki-docs/index.json`), including titles, slug names, filenames and hierarchy.
+
+Sample configuration:
 
 ```json
 {
-	"docs": {
-		"home": {
-			"title": "Home",
-			"file": "home.md"
-		},
-		"products": {
-			"title": "Products",
-			"file": "",
-			"children": {
-				"category-a": {
-					"title": "Category A",
-					"file": "product-category-a.md"
-				},
-				"category-b": {
-					"title": "Category B",
-					"file": "product-category-b.md"
-				}
+	"home": {
+		"title": "Home",
+		"file": "home.md"
+	},
+	"products": {
+		"title": "Products",
+		"file": "",
+		"children": {
+			"category-a": {
+				"title": "Category A",
+				"file": "product/category-a.md"
+			},
+			"category-b": {
+				"title": "Category B",
+				"file": "product/category-b.md"
 			}
-		},
-		"global-site": {
-			"title": "Global Site",
-			"file": "http://example.com/"
 		}
+	},
+	"global-site": {
+		"title": "Global Site",
+		"file": "http://example.com/"
 	}
 }
 ```
