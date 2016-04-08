@@ -42,7 +42,7 @@ module.exports = function( grunt ) {
 		uglify: {
 			options: {
 				sourceMap: true,
-				preserveComments: 'some',
+				preserveComments: false,
 			},
 			all: {
 				files: {
