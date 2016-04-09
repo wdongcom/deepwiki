@@ -2,9 +2,9 @@
 
 A lightweight wiki system, based on Markdown, coded in PHP.
 
-- **Contributor**: [Yuan Chong](http://ychong.com/)
+- **Contributor**: [Yuan Chong](https://chon.io/)
 - **License**: [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
-- **Live Demo**: [http://deepwiki.deepdevelop.com/](http://deepwiki.deepdevelop.com/)
+- **Live Demo**: [http://deepwiki.deepdevelop.com/](http://deepwiki.chon.io/)
 
 ## Installation
 
@@ -14,8 +14,8 @@ A lightweight wiki system, based on Markdown, coded in PHP.
 
 ## Quick Start
 
-1. [Make a configuration file from the sample](#/configuration).
-2. [Write down some Markdown files](#/documents-structure) into `deepwiki-docs/`.
+1. [Make a configuration file from the sample](#configuration).
+2. [Write down some Markdown files](#writing-documents) into `deepwiki-docs/`.
 3. Run it in PHP. 
 
 ## Configuration
@@ -44,12 +44,12 @@ Property | Description
 `site_name` | Title of the website. Defaults to `'DeepWiki'`.
 `site_description` | Short description of the website Defaults to `'Markdown Documents Showcase'`.
 `copyright` | Copyright text in footer HTML format. Defaults to `'Powered by <a href="https://github.com/ychongsaytc/deepwiki" target="_blank">DeepWiki</a>.'`.
-`theme` | Slug name of current theme, must be matched a directory name in `deepwiki-themes/` (see [Theme Development](#/theme-development)). Defaults to `'default'`.
+`theme` | Slug name of current theme, must be matched a directory name in `deepwiki-themes/` (see [Theme Development](#theme-development)). Defaults to `'default'`.
 `docs_path` | Directory to find document files. Defaults to `'deepwiki-docs-example'`.
 `home_route` | The default route (a path to the landing document) for root page visits. Defaults to `'quick-start'`.
 `display_chapter` | Display chapter number (like `1.1.a.`) before document title. Defaults to `false`.
 `display_index` | Display contents index navigation (based on content outline). Defaults to `false`.
-`rewrite` | Enable global URL Rewrite (see [URL Rewrite](#/url-rewrite) to enable rewrite feature for your server). Defaults to `false`.
+`rewrite` | Enable global URL Rewrite (see [URL Rewrite](#url-rewrite) to enable rewrite feature for your server). Defaults to `false`.
 `footer_code` | HTML code at the end of `<body>`, can be placed your Google Analytics code, ["Fork me on GitHub"](https://github.com/blog/273-github-ribbons) badge, and anything you want. Defaults to empty.
 `password` | Main password to view the website, fill in this to enable site authentication. Defaults to empty.
 `cookie_salt` | A random string for encrypt cookies data, important. Defaults to empty.
@@ -69,7 +69,7 @@ deepwiki-vendor/                 The necessary components
 
 ## Writing Documents
 
-All documents must be placed in DeepWiki documents directory (defaults to `deepwiki-docs/`, can be changed in [DeepWiki configuration](#/configuration)).
+All documents must be placed in DeepWiki documents directory (defaults to `deepwiki-docs/`, can be changed in [DeepWiki configuration](#configuration)).
 
 ### Arrange your documents through file naming
 
@@ -78,15 +78,15 @@ Basic way to arrange your documents, will be overwrite by the definition in Deep
 #### Full functional naming example
 
 ```
-1. Parent Page One [parent-1].markdown
-1.1. Child Page One [child-1].markdown
-1.2. Child Page Two [child-2].markdown
-1.2.1. Grandchild Page One [grandchild-1].markdown
-1.2.2. Grandchild Page Two [grandchild-2].markdown
-1.2.3. Grandchild Page Three [grandchild-3].markdown
-1.3. Child Page Two [child-3].markdown
-2. Parent Page Two [parent-2].markdown
-3. Parent Page Three [parent-3].markdown
+1. Parent Page One [parent-1].md
+1.1. Child Page One [child-1].md
+1.2. Child Page Two [child-2].md
+1.2.1. Grandchild Page One [grandchild-1].md
+1.2.2. Grandchild Page Two [grandchild-2].md
+1.2.3. Grandchild Page Three [grandchild-3].md
+1.3. Child Page Two [child-3].md
+2. Parent Page Two [parent-2].md
+3. Parent Page Three [parent-3].md
 ```
 
 1. **Chapter Number**: (optional) Using digits or letters ended with a point (`.`). If not set, the document will act in flat hierarchy.
@@ -167,7 +167,7 @@ Assets | Parse the URL into an assets path based URI.
 
 Think about the website root URL is `http://example.com/path/to/wiki/`:
 
-- `[Contact Us](#/about/contact-us)` will be parsed into:
+- `[Contact Us](#about/contact-us)` will be parsed into:
 
 	```html
 	<a href="/path/to/wiki/about/contact-us">Contact Us</a>
@@ -227,16 +227,16 @@ Functional elements in template files:
 
 Identifier | Description
 --- | ---
-`{{site_name}}` | The website name, defined in [DeepWiki configuration](#/configuration).
-`{{site_description}}` | The description of website, defined in [DeepWiki configuration](#/configuration).
+`{{site_name}}` | The website name, defined in [DeepWiki configuration](#configuration).
+`{{site_description}}` | The description of website, defined in [DeepWiki configuration](#configuration).
 `{{site_uri}}` | Current website root relative url, with a slash ending.
 `{{html_head}}` | Necessary general HTML tags in `<head>`.
 `{{nav}}` | The navigation menu HTML, formatted in Bootstrap style.
 `{{doc_title}}` | Current document title.
-`{{doc_heading}}` | Current document title maybe with the chapter (defined in [DeepWiki configuration](#/configuration)).
+`{{doc_heading}}` | Current document title maybe with the chapter (defined in [DeepWiki configuration](#configuration)).
 `{{doc_content}}` | Current document content in HTML.
-`{{copyright}}` | The copyright text, defined in [DeepWiki configuration](#/configuration). Must be escaped manually.
-`{{body_footer}}` | The page footer HTML code, defined in [DeepWiki configuration](#/configuration).
+`{{copyright}}` | The copyright text, defined in [DeepWiki configuration](#configuration). Must be escaped manually.
+`{{body_footer}}` | The page footer HTML code, defined in [DeepWiki configuration](#configuration).
 `{{logout_link}}` | Output a logout link when needed and Logging feature is enabled.
 `{{login_form}}` | The login form HTML code, formatted in Bootstrap style.
 

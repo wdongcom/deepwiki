@@ -60,7 +60,7 @@ module.exports = function( grunt ) {
 
 	grunt.registerTask( 'default', [ 'cssmin' , 'concat', 'uglify' ] );
 
-	readme = [
+	var readme = [
 		'# DeepWiki',
 		grunt.file.read( 'deepwiki-docs-example/01. About DeepWiki [about].markdown' ),
 		'## Installation',
@@ -82,6 +82,9 @@ module.exports = function( grunt ) {
 		'## Credits',
 		grunt.file.read( 'deepwiki-docs-example/10. Credits.markdown' ),
 	];
-	grunt.file.write( 'README.md', readme.join( '\n' ) );
+	readme = readme
+		.join( '\n' )
+		.replace( /\]\(\#\//g, '](#' );
+	grunt.file.write( 'README.md', readme );
 
 };

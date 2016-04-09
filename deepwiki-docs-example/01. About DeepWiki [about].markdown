@@ -1,6 +1,6 @@
 
 A lightweight wiki system, based on Markdown, coded in PHP.
 
-- **Contributor**: [Yuan Chong](http://ychong.com/)
+- **Contributor**: [Yuan Chong](https://chon.io/)
 - **License**: [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
-- **Live Demo**: [http://deepwiki.deepdevelop.com/](http://deepwiki.deepdevelop.com/)
+- **Live Demo**: [http://deepwiki.deepdevelop.com/](http://deepwiki.chon.io/)
