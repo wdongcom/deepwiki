@@ -355,8 +355,8 @@ foreach ( array_keys( $items ) as $k ) {
 
 // components
 
-require_once ( VENDOR_ROOT . '/erusev/parsedown/Parsedown.php' );
-require_once ( VENDOR_ROOT . '/erusev/parsedown-extra/ParsedownExtra.php' );
+require ( VENDOR_ROOT . '/erusev/parsedown/Parsedown.php' );
+require ( VENDOR_ROOT . '/erusev/parsedown-extra/ParsedownExtra.php' );
 
 // compile document content
 
@@ -509,7 +509,11 @@ if ( $config['display_index'] ) {
 			$heading_index[] = '</li>' . str_repeat( '</ul>', $unclosed );
 			$unclosed = 0;
 		}
-		$parts['{{doc_index}}'] = '<div class="content-index"><p class="content-index-title">Contents</p>' . implode( null, $heading_index ) . '</div>';
+		$heading_index = implode( null, $heading_index );
+		// only display index tree when contains more than two entrys
+		if ( substr_count( $heading_index, '<a ' ) >= 2 ) {
+			$parts['{{doc_index}}'] = '<div class="content-index"><p class="content-index-title">Contents</p>' . $heading_index . '</div>';
+		}
 	}
 
 }
