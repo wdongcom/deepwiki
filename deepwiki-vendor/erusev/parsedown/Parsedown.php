@@ -959,7 +959,6 @@ class Parsedown
         '!' => array('Image'),
         '&' => array('SpecialCharacter'),
         '*' => array('Emphasis'),
-        ':' => array('Url'),
         '<' => array('UrlTag', 'EmailTag', 'Markup', 'SpecialCharacter'),
         '>' => array('SpecialCharacter'),
         '[' => array('Link'),
@@ -971,7 +970,7 @@ class Parsedown
 
     # ~
 
-    protected $inlineMarkerList = '!"*_&[:<>`~\\';
+    protected $inlineMarkerList = '!"*_&[<>`~\\';
 
     #
     # ~
