@@ -192,11 +192,11 @@ Think about the website root URL is `http://example.com/path/to/wiki/`:
 
 If you are using Git to manage your documents, you can setup an auto deployment tool to deploy files onto DeepWiki.
 
-[**DeepDeploy**](https://deepdeploy.com/) is such an Auto Deployment system, deploying Git repository to any server (via FTP/SFTP). It's easy to use:
+[DeepDeploy](https://deepdeploy.com/){target="_blank" rel="nofollow"} is such an Auto Deployment system, deploying Git repository to any server (via FTP/SFTP). It's easy to use:
 
-1. Go to [DeepDeploy](https://deepdeploy.com/), sign in and create a project.
+1. Go to DeepDeploy, sign in and create a project.
 1. Add your repository contains document file to the project.
-1. Add your DeepWiki server FTP/SFTP information to Server section, with setting Path to Deploy to the DeepWiki document files path (e.g. `/deepwiki-docs` or `/home/ubuntu/public_html/deepwiki-docs`).
+1. Add your DeepWiki server FTP/SFTP information to Server section, with setting Path to Deploy to the DeepWiki document files path (e.g. `/deepwiki-docs/src` or `/home/ubuntu/public_html/deepwiki-docs/src`).
 1. Save the project and trigger your first auto deployment.
 
 ## Theme Development
@@ -267,8 +267,8 @@ RewriteBase /
 
 # prevent illegal request
 RewriteRule ^deepwiki-config/(.*)$ index.php\?p=_403 [L]
-RewriteRule ^deepwiki-docs/((?!assets).*)$ index.php\?p=_403 [L]
-RewriteRule ^deepwiki-docs-example/((?!assets).*)$ index.php\?p=_403 [L]
+RewriteRule ^deepwiki-docs/((?!.*?assets).*)$ index.php\?p=_403 [L]
+RewriteRule ^deepwiki-docs-example/((?!.*?assets).*)$ index.php\?p=_403 [L]
 
 # rewrite non-exist path to index.php
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -292,21 +292,21 @@ server {
 	# change this to your DeepWiki root path
 	root /var/www/deepwiki;
 
+	# custom error documents
+	error_page 404 = /index.php\?p=_404;
+	error_page 403 = /index.php\?p=_403;
+
 	# prevent illegal request
 	location ~ /(deepwiki-config\/) {
 		deny all;
 	}
-	location ~ /((deepwiki-docs|deepwiki-docs-example)\/((?!assets).*)) {
+	location ~ /((deepwiki-docs|deepwiki-docs-example)\/((?!.*?assets).*)) {
 		deny all;
 	}
 
 	# rewrite non-exist path to index.php, or return HTTP 404 Not Found
 	location / {
 		try_files $uri $uri/ /index.php?p=$uri&$args;
-
-		# custom error documents
-		error_page 404 = /index.php\?p=_404;
-		error_page 403 = /index.php\?p=_403;
 	}
 
 	# example of passing request to FastCGI
