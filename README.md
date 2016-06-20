@@ -2,15 +2,15 @@
 
 A lightweight wiki system, based on Markdown, coded in PHP.
 
-- **Contributor**: [Yuan Chong](https://chon.io/){target="_blank"}
-- **License**: [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0){target="_blank" rel="nofollow"}
-- **Live Demo**: [http://deepwiki.chon.io/](http://deepwiki.chon.io/){target="_blank"}
+- **Contributor**: [Yuan Chong](https://chon.io/)
+- **License**: [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+- **Live Demo**: [http://deepwiki.chon.io/](http://deepwiki.chon.io/)
 
-![Code is Poetry](!/codeispoetry-2x.png){width="190" height="15"}
+![Code is Poetry](http://deepwiki.chon.io/deepwiki-docs-example/assets/codeispoetry.png)
 
 ## Installation
 
-1. [Download the latest release of DeepWiki](https://github.com/ychongsaytc/deepwiki/releases){target="_blank" rel="nofollow"}.
+1. [Download the latest release of DeepWiki](https://github.com/ychongsaytc/deepwiki/releases).
 2. Unarchive package.
 3. Done.
 
@@ -192,7 +192,7 @@ Think about the website root URL is `http://example.com/path/to/wiki/`:
 
 If you are using Git to manage your documents, you can setup an auto deployment tool to deploy files onto DeepWiki.
 
-[DeepDeploy](https://deepdeploy.com/){target="_blank" rel="nofollow"} is such an Auto Deployment system, deploying Git repository to any server (via FTP/SFTP). It's easy to use:
+[DeepDeploy](https://deepdeploy.com/) is such an Auto Deployment system, deploying Git repository to any server (via FTP/SFTP). It's easy to use:
 
 1. Go to DeepDeploy, sign in and create a project.
 1. Add your repository contains document file to the project.
@@ -369,8 +369,8 @@ server {
 
 ### Thanks to
 
-- [Parsedown](http://parsedown.org/){target="_blank" rel="nofollow"} by [Emanuil Rusev](http://erusev.com/){target="_blank" rel="nofollow"} (implemented to DeepWiki)
-- [Bootstrap](http://getbootstrap.com/){target="_blank" rel="nofollow"} (implemented to DeepWiki Default Theme)
-- [jQuery](http://jquery.com/){target="_blank" rel="nofollow"} (implemented to DeepWiki Default Theme)
-- [Prism](http://prismjs.com/){target="_blank" rel="nofollow"} (implemented to DeepWiki Default Theme)
-- [GitHub Markdown CSS](https://github.com/revolunet/sublimetext-markdown-preview){target="_blank" rel="nofollow"} (implemented to DeepWiki Default Theme)
+- [Parsedown](http://parsedown.org/) by [Emanuil Rusev](http://erusev.com/) (implemented to DeepWiki)
+- [Bootstrap](http://getbootstrap.com/) (implemented to DeepWiki Default Theme)
+- [jQuery](http://jquery.com/) (implemented to DeepWiki Default Theme)
+- [Prism](http://prismjs.com/) (implemented to DeepWiki Default Theme)
+- [GitHub Markdown CSS](https://github.com/revolunet/sublimetext-markdown-preview) (implemented to DeepWiki Default Theme)
