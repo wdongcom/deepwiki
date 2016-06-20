@@ -2,13 +2,15 @@
 
 A lightweight wiki system, based on Markdown, coded in PHP.
 
-- **Contributor**: [Yuan Chong](https://chon.io/)
-- **License**: [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
-- **Live Demo**: [http://deepwiki.deepdevelop.com/](http://deepwiki.chon.io/)
+- **Contributor**: [Yuan Chong](https://chon.io/){target="_blank"}
+- **License**: [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0){target="_blank" rel="nofollow"}
+- **Live Demo**: [http://deepwiki.chon.io/](http://deepwiki.chon.io/){target="_blank"}
+
+![Code is Poetry](!/codeispoetry-2x.png){width="190" height="15"}
 
 ## Installation
 
-1. [Download the latest release of DeepWiki](https://github.com/ychongsaytc/deepwiki/releases).
+1. [Download the latest release of DeepWiki](https://github.com/ychongsaytc/deepwiki/releases){target="_blank" rel="nofollow"}.
 2. Unarchive package.
 3. Done.
 
@@ -29,6 +31,7 @@ Main configuration is placed in `deepwiki-config/config.json`, can be made from 
 	"copyright"        : "Powered by <a href=\"https://github.com/ychongsaytc/deepwiki\" target=\"_blank\">DeepWiki</a>.",
 	"theme"            : "default",
 	"docs_path"        : "deepwiki-docs-example",
+	"assets_path"      : "deepwiki-docs-example/assets",
 	"home_route"       : "quick-start",
 	"display_chapter"  : false,
 	"display_index"    : false,
@@ -46,6 +49,7 @@ Property | Description
 `copyright` | Copyright text in footer HTML format. Defaults to `'Powered by <a href="https://github.com/ychongsaytc/deepwiki" target="_blank">DeepWiki</a>.'`.
 `theme` | Slug name of current theme, must be matched a directory name in `deepwiki-themes/` (see [Theme Development](#theme-development)). Defaults to `'default'`.
 `docs_path` | Directory to find document files. Defaults to `'deepwiki-docs-example'`.
+`assets_path` | Directory to find asset files. Defaults to `'deepwiki-docs-example/assets'`.
 `home_route` | The default route (a path to the landing document) for root page visits. Defaults to `'quick-start'`.
 `display_chapter` | Display chapter number (like `1.1.a.`) before document title. Defaults to `false`.
 `display_index` | Display contents index navigation (based on content outline). Defaults to `false`.
@@ -59,7 +63,7 @@ Property | Description
 ```
 deepwiki-docs/                   Document files in Markdown, plain text, HTML
              /index.json         A JSON specified all document titles, filenames, slug names and hierarchy
-deepwiki-assets/                 Asset files (e.g. images)
+             /assets/            Asset files (e.g. images and attachments)
 deepwiki-config/config.json      Main configuration file in JSON
 deepwiki-themes/                 DeepWiki themes
                /default/         The default theme of DeepWiki
@@ -175,12 +179,12 @@ Think about the website root URL is `http://example.com/path/to/wiki/`:
 - `[Click to view full size](!/full-size-image.jpg)` will be parsed into:
 
 	```html
-	<a href="/path/to/wiki/deepwiki-assets/full-size-image.jpg">Click to view full size</a>
+	<a href="/path/to/wiki/deepwiki-docs/assets/full-size-image.jpg">Click to view full size</a>
 	```
 - `![Website Logo](!/logo.png)` will be parsed into:
 
 	```html
-	<img src="/path/to/wiki/deepwiki-assets/logo.png" alt="Website Logo" />
+	<img src="/path/to/wiki/deepwiki-docs/assets/logo.png" alt="Website Logo" />
 	```
 
 
@@ -263,7 +267,8 @@ RewriteBase /
 
 # prevent illegal request
 RewriteRule ^deepwiki-config/(.*)$ index.php\?p=_403 [L]
-RewriteRule ^deepwiki-docs/(.*)$ index.php\?p=_403 [L]
+RewriteRule ^deepwiki-docs/((?!assets).*)$ index.php\?p=_403 [L]
+RewriteRule ^deepwiki-docs-example/((?!assets).*)$ index.php\?p=_403 [L]
 
 # rewrite non-exist path to index.php
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -288,7 +293,10 @@ server {
 	root /var/www/deepwiki;
 
 	# prevent illegal request
-	location ~ /(deepwiki-config|deepwiki-docs) {
+	location ~ /(deepwiki-config\/) {
+		deny all;
+	}
+	location ~ /((deepwiki-docs|deepwiki-docs-example)\/((?!assets).*)) {
 		deny all;
 	}
 
@@ -361,8 +369,8 @@ server {
 
 ### Thanks to
 
-- [Parsedown](http://parsedown.org/) by [Emanuil Rusev](http://erusev.com/) (implemented to DeepWiki)
-- [Bootstrap](http://getbootstrap.com/) (implemented to DeepWiki Default Theme)
-- [jQuery](http://jquery.com/) (implemented to DeepWiki Default Theme)
-- [Prism](http://prismjs.com/) (implemented to DeepWiki Default Theme)
-- [GitHub Markdown CSS](https://github.com/revolunet/sublimetext-markdown-preview) (implemented to DeepWiki Default Theme)
+- [Parsedown](http://parsedown.org/){target="_blank" rel="nofollow"} by [Emanuil Rusev](http://erusev.com/){target="_blank" rel="nofollow"} (implemented to DeepWiki)
+- [Bootstrap](http://getbootstrap.com/){target="_blank" rel="nofollow"} (implemented to DeepWiki Default Theme)
+- [jQuery](http://jquery.com/){target="_blank" rel="nofollow"} (implemented to DeepWiki Default Theme)
+- [Prism](http://prismjs.com/){target="_blank" rel="nofollow"} (implemented to DeepWiki Default Theme)
+- [GitHub Markdown CSS](https://github.com/revolunet/sublimetext-markdown-preview){target="_blank" rel="nofollow"} (implemented to DeepWiki Default Theme)

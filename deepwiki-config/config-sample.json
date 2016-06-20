@@ -4,6 +4,7 @@
 	"copyright"        : "Powered by <a href=\"https://github.com/ychongsaytc/deepwiki\" target=\"_blank\">DeepWiki</a>.",
 	"theme"            : "default",
 	"docs_path"        : "deepwiki-docs-example",
+	"assets_path"      : "deepwiki-docs-example/assets",
 	"home_route"       : "quick-start",
 	"display_chapter"  : true,
 	"display_index"    : false,

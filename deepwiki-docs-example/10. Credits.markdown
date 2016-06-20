@@ -1,8 +1,8 @@
 
 ### Thanks to
 
-- [Parsedown](http://parsedown.org/) by [Emanuil Rusev](http://erusev.com/) (implemented to DeepWiki)
-- [Bootstrap](http://getbootstrap.com/) (implemented to DeepWiki Default Theme)
-- [jQuery](http://jquery.com/) (implemented to DeepWiki Default Theme)
-- [Prism](http://prismjs.com/) (implemented to DeepWiki Default Theme)
-- [GitHub Markdown CSS](https://github.com/revolunet/sublimetext-markdown-preview) (implemented to DeepWiki Default Theme)
+- [Parsedown](http://parsedown.org/){target="_blank" rel="nofollow"} by [Emanuil Rusev](http://erusev.com/){target="_blank" rel="nofollow"} (implemented to DeepWiki)
+- [Bootstrap](http://getbootstrap.com/){target="_blank" rel="nofollow"} (implemented to DeepWiki Default Theme)
+- [jQuery](http://jquery.com/){target="_blank" rel="nofollow"} (implemented to DeepWiki Default Theme)
+- [Prism](http://prismjs.com/){target="_blank" rel="nofollow"} (implemented to DeepWiki Default Theme)
+- [GitHub Markdown CSS](https://github.com/revolunet/sublimetext-markdown-preview){target="_blank" rel="nofollow"} (implemented to DeepWiki Default Theme)

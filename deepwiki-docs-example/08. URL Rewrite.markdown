@@ -19,7 +19,8 @@ RewriteBase /
 
 # prevent illegal request
 RewriteRule ^deepwiki-config/(.*)$ index.php\?p=_403 [L]
-RewriteRule ^deepwiki-docs/(.*)$ index.php\?p=_403 [L]
+RewriteRule ^deepwiki-docs/((?!.*?assets).*)$ index.php\?p=_403 [L]
+RewriteRule ^deepwiki-docs-example/((?!.*?assets).*)$ index.php\?p=_403 [L]
 
 # rewrite non-exist path to index.php
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -44,7 +45,10 @@ server {
 	root /var/www/deepwiki;
 
 	# prevent illegal request
-	location ~ /(deepwiki-config|deepwiki-docs) {
+	location ~ /(deepwiki-config\/) {
+		deny all;
+	}
+	location ~ /((deepwiki-docs|deepwiki-docs-example)\/((?!.*?assets).*)) {
 		deny all;
 	}
 

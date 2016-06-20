@@ -105,11 +105,11 @@ Think about the website root URL is `http://example.com/path/to/wiki/`:
 - `[Click to view full size](!/full-size-image.jpg)` will be parsed into:
 
 	```html
-	<a href="/path/to/wiki/deepwiki-assets/full-size-image.jpg">Click to view full size</a>
+	<a href="/path/to/wiki/deepwiki-docs/assets/full-size-image.jpg">Click to view full size</a>
 	```
 - `![Website Logo](!/logo.png)` will be parsed into:
 
 	```html
-	<img src="/path/to/wiki/deepwiki-assets/logo.png" alt="Website Logo" />
+	<img src="/path/to/wiki/deepwiki-docs/assets/logo.png" alt="Website Logo" />
 	```
 

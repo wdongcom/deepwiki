@@ -27,7 +27,6 @@ define( 'CONFIG_ROOT', APP_ROOT . '/deepwiki-config' );
 define( 'VENDOR_ROOT', APP_ROOT . '/deepwiki-vendor' );
 define( 'THEMES_ROOT', APP_ROOT . '/deepwiki-themes' );
 define( 'THEMES_ROOT_URI', rtrim( SITE_URI, '/' ) . '/deepwiki-themes' );
-define( 'ASSETS_ROOT_URI', rtrim( SITE_URI, '/' ) . '/deepwiki-assets' );
 
 define( 'LOGGING_LOGGED_IN', 11 );
 define( 'LOGGING_NOT_LOGGED_IN', 12 );
@@ -133,9 +132,10 @@ if ( ! is_array( $config ) ) {
 $config = array_merge( array(
 	'site_name'        => 'DeepWiki',
 	'site_description' => 'Markdown Documents Showcase',
-	'copyright'        => 'Powered by <a href="http://deepwiki.deepdevelop.com/" target="_blank">DeepWiki</a>.',
+	'copyright'        => 'Powered by <a href="http://deepwiki.chon.io/" target="_blank">DeepWiki</a>.',
 	'theme'            => 'default',
 	'docs_path'        => 'deepwiki-docs',
+	'assets_path'      => 'deepwiki-docs/assets',
 	'home_route'       => null,
 	'display_chapter'  => false,
 	'display_index'    => false,
@@ -148,7 +148,8 @@ $config = array_merge( array(
 
 // constants based on configuration
 
-define( 'DOCS_ROOT', APP_ROOT . '/' . trim( $config['docs_path'], '/' ) );
+define( 'DOCS_ROOT'      , APP_ROOT . '/' . trim( $config['docs_path'], '/' ) );
+define( 'ASSETS_ROOT_URI', rtrim( SITE_URI, '/' ) . '/' . trim( $config['assets_path'], '/' ) );
 
 // load docs index tree configuration
 
@@ -391,6 +392,31 @@ foreach ( $items as $entry ) {
 			if ( $matches[0] ) {
 				foreach ( array_keys( $matches[0] ) as $i ) {
 					$content = str_replace( $matches[0][ $i ], ' ' . $matches[1][ $i ] . '="' . dw_asset_uri( $matches[2][ $i ] ) . '"', $content );
+				}
+			}
+			/** integrate tag properties */
+			$matches = array();
+			preg_match_all( '#\ \/>\{([^\}]+?)\}#', $content, $matches );
+			if ( $matches[0] ) {
+				foreach ( array_keys( $matches[0] ) as $i ) {
+					$element = sprintf( ' %s />',
+						$matches[1][ $i ]
+					);
+					$element = str_replace( '&quot;', '"', $element );
+					$content = str_replace( $matches[0][ $i ], $element, $content );
+				}
+			}
+			$matches = array();
+			preg_match_all( '#>([^\>]*?)<\/([a-zA-Z]+)>\{([^\}]+?)\}#', $content, $matches );
+			if ( $matches[0] ) {
+				foreach ( array_keys( $matches[0] ) as $i ) {
+					$element = sprintf( ' %s>%s</%s>',
+						$matches[3][ $i ],
+						$matches[1][ $i ], // plain text, no tags
+						$matches[2][ $i ]
+					);
+					$element = str_replace( '&quot;', '"', $element );
+					$content = str_replace( $matches[0][ $i ], $element, $content );
 				}
 			}
 		}
