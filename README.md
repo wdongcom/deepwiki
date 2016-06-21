@@ -293,8 +293,8 @@ server {
 	root /var/www/deepwiki;
 
 	# custom error documents
-	error_page 404 = /index.php\?p=_404;
-	error_page 403 = /index.php\?p=_403;
+	error_page 404 =404 /index.php\?p=_404;
+	error_page 403 =403 /index.php\?p=_403;
 
 	# prevent illegal request
 	location ~ /(deepwiki-config\/) {
