@@ -8,6 +8,7 @@
 // environment
 
 date_default_timezone_set( 'UTC' );
+setlocale( LC_ALL, 'en_US.UTF8' );
 error_reporting( 0 );
 
 // load query
@@ -87,7 +88,8 @@ function dw_doc_file_type( $filename ) {
 }
 
 function dw_sanitize( $string ) {
-	$output = strtolower( $string );
+	$output = iconv( 'UTF-8', 'ASCII//TRANSLIT', $string );
+	$output = strtolower( $output );
 	$output = preg_replace( '#([^0-9a-z]+)#', '-', $output );
 	$output = trim( $output, '-' );
 	if ( empty( $output ) )
