@@ -198,7 +198,7 @@ $parts = array(
 foreach ( $theme_config['assets']['css'] as $entry )
 	$parts['{{html_head}}'] .= sprintf( '<link rel="stylesheet" type="text/css" href="%s" />' . PHP_EOL, $theme_root_uri . '/' . $entry );
 foreach ( $theme_config['assets']['js'] as $entry )
-	$parts['{{html_head}}'] .= sprintf( '<script type="text/javascript" src="%s"></script>' . PHP_EOL, $theme_root_uri . '/' . $entry );
+	$parts['{{body_footer}}'] .= sprintf( '<script type="text/javascript" src="%s"></script>' . PHP_EOL, $theme_root_uri . '/' . $entry );
 
 $parts['{{login_form}}'] = '<form method="post" role="form">' .
 	'<div class="form-group"><label>Password</label><input type="password" name="password" class="form-control" /></div>' .
