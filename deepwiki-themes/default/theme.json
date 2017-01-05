@@ -2,10 +2,10 @@
 	"name": "DeepWiki Theme - Default",
 	"assets": {
 		"css": [
-			"build/web.min.css"
+			"build/main.min.css"
 		],
 		"js": [
-			"build/web.min.js"
+			"build/main.min.js"
 		]
 	}
 }

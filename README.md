@@ -4,7 +4,7 @@ A lightweight wiki system, based on Markdown, coded in PHP.
 
 - **Contributor**: [Yuan Chong](https://chon.io/)
 - **License**: [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
-- **Live Demo**: [http://deepwiki.chon.io/](http://deepwiki.chon.io/)
+- **Live Demo**: [https://deepwiki.chon.io/](https://deepwiki.chon.io/)
 
 ![Code is Poetry](http://deepwiki.chon.io/deepwiki-docs-example/assets/codeispoetry.png)
 

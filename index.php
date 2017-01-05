@@ -368,7 +368,8 @@ foreach ( $items as $entry ) {
 		$origin = file_get_contents( DOCS_ROOT . '/' . $entry['filename'] );
 		switch ( $entry['type'] ) {
 			case 'markdown':
-				$Parsedown = new ParsedownExtra();
+				$Parsedown = new Parsedown();
+				$Parsedown->setUrlsLinked( false );
 				$content = $Parsedown->text( $origin );
 				break;
 			case 'html':

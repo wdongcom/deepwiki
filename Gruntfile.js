@@ -5,12 +5,12 @@ module.exports = function( grunt ) {
 		cssmin: {
 			combine: {
 				files: {
-					'deepwiki-themes/default/build/web.min.css': [
+					'deepwiki-themes/default/build/main.min.css': [
 						'deepwiki-themes/default/vendor/bootstrap/css/bootstrap.css',
 						'deepwiki-themes/default/vendor/bootstrap/css/bootstrap-theme.css',
 						'deepwiki-themes/default/vendor/prism/themes/prism.css',
 						'deepwiki-themes/default/css/gfm.css',
-						'deepwiki-themes/default/css/global.css',
+						'deepwiki-themes/default/css/main.css',
 					],
 				},
 			},
@@ -34,9 +34,9 @@ module.exports = function( grunt ) {
 					'deepwiki-themes/default/vendor/prism/components/prism-php-extras.js',
 					'deepwiki-themes/default/vendor/prism/components/prism-python.js',
 					'deepwiki-themes/default/vendor/prism/components/prism-ini.js',
-					'deepwiki-themes/default/js/global.js',
+					'deepwiki-themes/default/js/main.js',
 				],
-				dest: 'deepwiki-themes/default/build/web.js',
+				dest: 'deepwiki-themes/default/build/main.js',
 			},
 		},
 		uglify: {
@@ -46,8 +46,8 @@ module.exports = function( grunt ) {
 			},
 			all: {
 				files: {
-					'deepwiki-themes/default/build/web.min.js': [
-						'deepwiki-themes/default/build/web.js',
+					'deepwiki-themes/default/build/main.min.js': [
+						'deepwiki-themes/default/build/main.js',
 					],
 				},
 			},
