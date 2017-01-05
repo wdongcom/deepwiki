@@ -6,7 +6,7 @@ A lightweight wiki system, based on Markdown, coded in PHP.
 - **License**: [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 - **Live Demo**: [https://deepwiki.chon.io/](https://deepwiki.chon.io/)
 
-![Code is Poetry](http://deepwiki.chon.io/deepwiki-docs-example/assets/codeispoetry.png)
+![Code is Poetry](https://deepwiki.chon.io/deepwiki-docs-example/assets/codeispoetry.png)
 
 ## Installation
 
@@ -328,32 +328,37 @@ server {
 
 ## Change Log
 
-### 1.2.0 (beta1) 2016-04-08
+### 1.2.0 <small>2017-01-05</small>
+
+- **FIXED**: [#3](https://github.com/ychongsaytc/deepwiki/pull/3) Nicer sanitizing
+- **TWEAK**: Move JS to the end of the `<body>` tag
+
+### 1.2.0 (beta1) <small>2016-04-08</small>
 
 - **NEW**: Moved docs index tree configuration to docs root directory
 - **TWEAK**: Add http status for 403 and 404
 - **TWEAK**: Updated vendor components
 - **FIXED**: Sorting for chapter more than 2-figure string
 
-### 1.1.1 (beta3) 2015-08-11
+### 1.1.1 (beta3) <small>2015-08-11</small>
 
 - **TWEAK**: Updated vendor components
 - **TWEAK**: Optimized URL
 
-### 1.1.1 (beta2) 2014-12-08
+### 1.1.1 (beta2) <small>2014-12-08</small>
 
 - **NEW**: Supported to generate content outline index
 - **NEW**: Automatically add anchor to content headings
 
-### 1.1.1 (beta1) 2014-12-07
+### 1.1.1 (beta1) <small>2014-12-07</small>
 
 - **NEW**: Supported Responsive CSS
 
-### 1.1.0 (beta2) 2014-12-06
+### 1.1.0 (beta2) <small>2014-12-06</small>
 
 - **FIXED**: Redirection bug for root visits
 
-### 1.1.0 (beta1) 2014-12-06
+### 1.1.0 (beta1) <small>2014-12-06</small>
 
 - **NEW**: Allowed to define all document titles, filenames and slug names in configuration instead of using file naming
 - **NEW**: Supported inner page linking and asset files linking in document content
@@ -361,7 +366,7 @@ server {
 - **NEW**: Minified all assets files in DeepWiki Default Theme
 - **NEW**: Included necessary components in DeepWiki Git repository for easier installation
 
-### 1.0.0 (beta1) 2014-11-14
+### 1.0.0 (beta1) <small>2014-11-14</small>
 
 - **NEW**: Born
 

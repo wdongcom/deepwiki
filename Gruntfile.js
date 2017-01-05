@@ -84,6 +84,10 @@ module.exports = function( grunt ) {
 	];
 	readme = readme
 		.join( '\n' )
+		.replace( /{target="_blank"}/g, '' )
+		.replace( /{target="_blank" rel="nofollow"}/g, '' )
+		.replace( /{width="(\d+)" height="(\d+)"}/g, '' )
+		.replace( /\!\/codeispoetry-2x\.png/g, 'https://deepwiki.chon.io/deepwiki-docs-example/assets/codeispoetry.png' )
 		.replace( /\]\(\#\//g, '](#' );
 	grunt.file.write( 'README.md', readme );
 
